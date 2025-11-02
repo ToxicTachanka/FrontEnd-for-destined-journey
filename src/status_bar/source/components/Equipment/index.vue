@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { useStatData } from '../../composables/use-stat-data';
 import { safeGet } from '../../utils/data-adapter';
+import { sortItemsByRarity } from '../../utils/quality';
 import CommonStatus from '../common/CommonStatus.vue';
-import EquipmentSlot from './EquipmentSlot.vue';
+import EquipmentSlot from '../common/EquipmentSlot.vue';
 
 // 使用状态数据
 const { statData } = useStatData();
@@ -30,6 +31,8 @@ const equipmentData = computed(() => {
     const items: Array<{
       name: string;
       quality: string;
+      tags: string;
+      effect: string;
       description: string;
       position: string;
     }> = [];
@@ -42,10 +45,15 @@ const equipmentData = computed(() => {
       items.push({
         name: key,
         quality: safeGet(equipData, '品质', '') as string,
+        tags: safeGet(equipData, '标签', '') as string,
+        effect: safeGet(equipData, '效果', '') as string,
         description: safeGet(equipData, '描述', '') as string,
         position: safeGet(equipData, '位置', '') as string,
       });
     });
+
+    // 按品质排序装备
+    sortItemsByRarity(items);
 
     return {
       ...category,
@@ -79,6 +87,8 @@ const totalEquipmentCount = computed(() => {
               :key="item.name"
               :equipment-name="item.name"
               :quality="item.quality"
+              :tags="item.tags"
+              :effect="item.effect"
               :description="item.description"
               :position="item.position"
             />
@@ -96,7 +106,7 @@ const totalEquipmentCount = computed(() => {
 .equipment-section {
   .property-name {
     font-weight: bold;
-    color: #6a514d;
+    color: var(--theme-text-secondary);
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.08);
     margin-bottom: 12px;
   }
@@ -119,9 +129,9 @@ const totalEquipmentCount = computed(() => {
   font-family: 'Cinzel', serif;
   font-size: 1em;
   font-weight: 700;
-  color: #5d4037;
+  color: var(--theme-text-tertiary);
   padding-bottom: 8px;
-  border-bottom: 1px solid #d3c5b3;
+  border-bottom: 1px solid var(--theme-border-light);
   margin-bottom: 6px;
 }
 
@@ -132,14 +142,14 @@ const totalEquipmentCount = computed(() => {
 }
 
 .empty-category {
-  color: #7a655d;
+  color: var(--theme-text-muted);
   font-style: italic;
   font-size: 0.9em;
   padding: 5px 10px;
 }
 
 .empty-message {
-  color: #7a655d;
+  color: var(--theme-text-muted);
   font-style: italic;
   margin: 0;
   padding-left: 15px;

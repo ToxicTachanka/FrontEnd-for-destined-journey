@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useStatData } from '../../composables/use-stat-data';
+import { useThemeStore } from '../../store/theme';
 import { normalizeStringOrArray, safeGet } from '../../utils/data-adapter';
 import CommonStatus from '../common/CommonStatus.vue';
 import PropertyItem from './PropertyItem.vue';
@@ -7,6 +8,7 @@ import ResourceBar from './ResourceBar.vue';
 
 // 使用状态数据
 const { statData } = useStatData();
+const themeStore = useThemeStore();
 
 // 获取资源数据
 const resourcesData = computed(() => {
@@ -15,11 +17,15 @@ const resourcesData = computed(() => {
       hp: { current: 0, max: 0 },
       mp: { current: 0, max: 0 },
       sp: { current: 0, max: 0 },
-      exp: { current: 0, needed: 0 },
+      exp: { current: 0, needed: 0, isMaxLevel: false },
     };
 
   const resources = safeGet(statData.value, '角色.资源', {});
   const status = safeGet(statData.value, '角色.状态', {});
+  const level = safeGet(status, '等级', 1);
+
+  // 判断是否达到最高等级（25级）
+  const isMaxLevel = level >= 25;
 
   return {
     hp: {
@@ -37,6 +43,7 @@ const resourcesData = computed(() => {
     exp: {
       current: safeGet(status, '累计经验值', 0),
       needed: safeGet(status, '升级所需经验', 0),
+      isMaxLevel,
     },
   };
 });
@@ -63,10 +70,10 @@ const statusData = computed(() => {
     lifeLevel: safeGet(status, '生命层级', '第一层级/普通层级'),
     level: safeGet(status, '等级', 1),
     race: safeGet(character, '种族', '未知'),
-    identity: Array.isArray(identity) ? (identity.length > 0 ? identity.join(', ') : '暂无') : identity || '暂无',
+    identity: Array.isArray(identity) ? (identity.length > 0 ? identity.join('、') : '暂无') : identity || '暂无',
     occupation: Array.isArray(occupation)
       ? occupation.length > 0
-        ? occupation.join(', ')
+        ? occupation.join('、')
         : '暂无'
       : occupation || '暂无',
     adventurerRank: safeGet(status, '冒险者等级', '未评级'),
@@ -104,28 +111,29 @@ const summaryDetails = computed(() => {
         icon="❤️"
         :current="resourcesData.hp.current"
         :max="resourcesData.hp.max"
-        color="#D32F2F"
+        :color="themeStore.effectiveColors.resourceHp"
       />
       <ResourceBar
         label="MP"
         icon="🔮"
         :current="resourcesData.mp.current"
         :max="resourcesData.mp.max"
-        color="#1976D2"
+        :color="themeStore.effectiveColors.resourceMp"
       />
       <ResourceBar
         label="SP"
         icon="⚡"
         :current="resourcesData.sp.current"
         :max="resourcesData.sp.max"
-        color="#388E3C"
+        :color="themeStore.effectiveColors.resourceSp"
       />
       <ResourceBar
         label="累计经验"
         icon="⭐"
         :current="resourcesData.exp.current"
         :max="resourcesData.exp.needed"
-        color="#FFA000"
+        :color="themeStore.effectiveColors.resourceExp"
+        :is-max-level="resourcesData.exp.isMaxLevel"
       />
     </div>
 
@@ -162,7 +170,7 @@ const summaryDetails = computed(() => {
   gap: 12px;
   margin-bottom: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #d3c5b3;
+  border-bottom: 1px solid var(--theme-border-light);
 }
 
 /* 状态网格布局 */
@@ -179,7 +187,7 @@ const summaryDetails = computed(() => {
     grid-row: 1;
     width: 1px;
     height: 100%;
-    background-color: #d3c5b3;
+    background-color: var(--theme-border-light);
     justify-self: center;
   }
 }
@@ -204,7 +212,7 @@ const summaryDetails = computed(() => {
 /* 属性名称样式 */
 .property-name {
   font-weight: bold;
-  color: #6a514d;
+  color: var(--theme-text-secondary);
   text-shadow: 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
@@ -226,7 +234,7 @@ const summaryDetails = computed(() => {
 
   .status-grid-right {
     padding-top: 10px;
-    border-top: 1px solid #d3c5b3;
+    border-top: 1px solid var(--theme-border-light);
   }
 }
 </style>

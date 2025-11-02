@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useStatData } from '../../composables/use-stat-data';
 import { getExtensibleItems, safeGet } from '../../utils/data-adapter';
+import { sortByRarity } from '../../utils/quality';
 import CommonStatus from '../common/CommonStatus.vue';
 import ItemEntry from './ItemEntry.vue';
 
@@ -15,23 +16,12 @@ const typeOrder: Record<string, number> = {
   材料: 1,
 };
 
-// 品质排序权重
-const rarityOrder: Record<string, number> = {
-  神话: 6,
-  传说: 5,
-  史诗: 4,
-  稀有: 3,
-  优良: 2,
-  普通: 1,
-};
-
 // 获取货币数据
 const currencyData = computed(() => {
-  if (!statData.value) return { platinum: 0, gold: 0, silver: 0, copper: 0 };
+  if (!statData.value) return { gold: 0, silver: 0, copper: 0 };
 
   const currency = safeGet(statData.value, '财产.货币', {});
   return {
-    platinum: safeGet(currency, '白金币', 0),
     gold: safeGet(currency, '金币', 0),
     silver: safeGet(currency, '银币', 0),
     copper: safeGet(currency, '铜币', 0),
@@ -50,6 +40,8 @@ const itemsData = computed(() => {
     quality: safeGet(itemData, '品质', '普通'),
     quantity: safeGet(itemData, '数量', 1),
     type: safeGet(itemData, '类型', '其它物品'),
+    tags: safeGet(itemData, '标签', ''),
+    effect: safeGet(itemData, '效果', ''),
     description: safeGet(itemData, '描述', '无描述'),
   }));
 });
@@ -69,11 +61,7 @@ const itemsByType = computed(() => {
 
   // 对每个分组内的物品按品质排序
   Object.values(grouped).forEach(items => {
-    items.sort((a, b) => {
-      const rarityA = rarityOrder[a.quality] || 0;
-      const rarityB = rarityOrder[b.quality] || 0;
-      return rarityB - rarityA;
-    });
+    items.sort(sortByRarity);
   });
 
   return grouped;
@@ -97,8 +85,8 @@ const itemStats = computed(() => {
 
 // 计算摘要信息
 const summaryDetails = computed(() => {
-  const { platinum, gold, silver, copper } = currencyData.value;
-  return `白金币: ${platinum} | 金币: ${gold} | 银币: ${silver} | 铜币: ${copper} | 物品: ${itemStats.value.total}`;
+  const { gold, silver, copper } = currencyData.value;
+  return `金币: ${gold} | 银币: ${silver} | 铜币: ${copper} | 物品: ${itemStats.value.total}`;
 });
 </script>
 
@@ -108,9 +96,6 @@ const summaryDetails = computed(() => {
     <div class="currency-section">
       <p class="property-name">💰 货币:</p>
       <div class="currency-display">
-        <span class="currency-item">
-          💠<span class="value-main">{{ currencyData.platinum }}</span>
-        </span>
         <span class="currency-item">
           🟡<span class="value-main">{{ currencyData.gold }}</span>
         </span>
@@ -141,6 +126,8 @@ const summaryDetails = computed(() => {
               :quality="item.quality"
               :quantity="item.quantity"
               :type="item.type"
+              :tags="item.tags"
+              :effect="item.effect"
               :description="item.description"
             />
           </div>
@@ -159,7 +146,7 @@ const summaryDetails = computed(() => {
 
   .property-name {
     font-weight: bold;
-    color: #6a514d;
+    color: var(--theme-text-secondary);
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.08);
     margin-bottom: 8px;
   }
@@ -188,7 +175,7 @@ const summaryDetails = computed(() => {
 /* 分隔线 */
 .thin-divider {
   border: 0;
-  border-top: 2px solid #c6b8a5;
+  border-top: 2px solid var(--theme-border-dark);
   margin: 10px 0;
   width: 100%;
 }
@@ -197,7 +184,7 @@ const summaryDetails = computed(() => {
 .items-section {
   .property-name {
     font-weight: bold;
-    color: #6a514d;
+    color: var(--theme-text-secondary);
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.08);
     margin-bottom: 12px;
   }
@@ -221,9 +208,9 @@ const summaryDetails = computed(() => {
   font-family: 'Cinzel', serif;
   font-size: 1em;
   font-weight: 700;
-  color: #5d4037;
+  color: var(--theme-text-tertiary);
   padding-bottom: 8px;
-  border-bottom: 1px solid #d3c5b3;
+  border-bottom: 1px solid var(--theme-border-light);
   margin-bottom: 6px;
 }
 
@@ -234,7 +221,7 @@ const summaryDetails = computed(() => {
 }
 
 .empty-message {
-  color: #7a655d;
+  color: var(--theme-text-muted);
   font-style: italic;
   margin: 0;
   padding-left: 15px;

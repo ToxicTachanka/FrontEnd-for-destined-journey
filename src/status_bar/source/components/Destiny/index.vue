@@ -10,18 +10,19 @@ const { statData } = useStatData();
 // 获取命运点数
 const destinyPoints = computed(() => {
   if (!statData.value) return 0;
-  return safeGet(statData.value, '命运系统.命运点数', 0);
+  return safeGet(statData.value, '命定系统.命运点数', 0);
 });
 
-// 获取红线角色数据
+// 获取命定之人角色数据
 const charactersData = computed(() => {
   if (!statData.value) return [];
 
-  const redLineObj = safeGet(statData.value, '命运系统.红线对象', {});
-  const characters = getExtensibleItems(redLineObj);
+  const destinyPeopleObj = safeGet(statData.value, '命定系统.命定之人', {});
+  const characters = getExtensibleItems(destinyPeopleObj);
 
   return Object.entries(characters).map(([charName, charData]: [string, any]) => ({
     name: charName,
+    bePresent: safeGet(charData, '是否在场', '是'),
     lifeLevel: safeGet(charData, '生命层级', ''),
     level: safeGet(charData, '等级', 1),
     race: safeGet(charData, '种族', ''),
@@ -31,13 +32,14 @@ const charactersData = computed(() => {
     favorites: safeGet(charData, '喜爱', ''),
     appearance: safeGet(charData, '外貌特质', ''),
     adornments: safeGet(charData, '衣物装饰', ''),
-    equipment: safeGet(charData, '角色装备', ''),
-    ascension: safeGet(charData, '登神长阶', ''),
-    isTied: safeGet(charData, '是否缔结红线', '否'),
+    equipment: safeGet(charData, '装备', {}),
+    attributes: safeGet(charData, '属性', {}),
+    ascension: safeGet(charData, '登神长阶', {}),
+    isTied: safeGet(charData, '是否缔结契约', '否'),
     affection: safeGet(charData, '好感度', 0),
     evaluation: safeGet(charData, '评价', ''),
     backstory: safeGet(charData, '背景故事', ''),
-    bondSkill: safeGet(charData, '羁绊技能', {}),
+    skills: safeGet(charData, '技能', {}),
   }));
 });
 
@@ -45,7 +47,7 @@ const charactersData = computed(() => {
 const summaryDetails = computed(() => {
   const fp = destinyPoints.value;
   const count = charactersData.value.length;
-  return `FP: ${fp} | 红线: ${count}人`;
+  return `FP: ${fp} | 命定: ${count}人`;
 });
 
 // 触发命运抽卡
@@ -60,7 +62,7 @@ const handleGacha = () => {
 </script>
 
 <template>
-  <CommonStatus title="💞 命运红线" variant="section" :default-open="false" :summary-details="summaryDetails">
+  <CommonStatus title="💞 命定之人" variant="section" :default-open="false" :summary-details="summaryDetails">
     <!-- 命运抽卡按钮 -->
     <button class="gacha-button" @click="handleGacha">命运抽卡(5连/500点)</button>
 
@@ -70,11 +72,12 @@ const handleGacha = () => {
       <span class="value-main">{{ destinyPoints }}</span>
     </div>
 
-    <!-- 红线角色列表 -->
+    <!-- 命定之人角色列表 -->
     <div v-if="charactersData.length > 0" class="characters-list">
       <DestinyCharacter
         v-for="(char, index) in charactersData"
         :key="index"
+        :be-present="char.bePresent"
         :name="char.name"
         :life-level="char.lifeLevel"
         :level="char.level"
@@ -86,25 +89,26 @@ const handleGacha = () => {
         :appearance="char.appearance"
         :adornments="char.adornments"
         :equipment="char.equipment"
+        :attributes="char.attributes"
         :ascension="char.ascension"
         :is-tied="char.isTied"
         :affection="char.affection"
         :evaluation="char.evaluation"
         :backstory="char.backstory"
-        :bond-skill="char.bondSkill"
+        :skills="char.skills"
       />
     </div>
 
     <!-- 空状态提示 -->
-    <p v-else class="empty-message value-main">尚未与任何人缔结深刻的命运联系</p>
+    <p v-else class="empty-message value-main">尚未与任何人缔结命定契约</p>
   </CommonStatus>
 </template>
 
 <style lang="scss" scoped>
 /* 命运抽卡按钮 */
 .gacha-button {
-  background-color: #8d6e63;
-  color: white;
+  background-color: var(--theme-button-bg);
+  color: var(--theme-button-text);
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -116,7 +120,7 @@ const handleGacha = () => {
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: #6d4c41;
+    background-color: var(--theme-button-bg-hover);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     transform: translateY(-2px);
   }
@@ -134,12 +138,12 @@ const handleGacha = () => {
 
   .property-name {
     font-weight: bold;
-    color: #6a514d;
+    color: var(--theme-text-secondary);
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.08);
   }
 
   .value-main {
-    color: #4a3b31;
+    color: var(--theme-text-primary);
   }
 }
 
@@ -152,7 +156,7 @@ const handleGacha = () => {
 
 /* 空状态提示 */
 .empty-message {
-  color: #7a655d;
+  color: var(--theme-text-muted);
   font-style: italic;
   margin: 0;
 }

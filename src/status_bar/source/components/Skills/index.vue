@@ -1,20 +1,11 @@
 <script lang="ts" setup>
 import { useStatData } from '../../composables/use-stat-data';
 import { getExtensibleItems, safeGet } from '../../utils/data-adapter';
+import { sortByRarity } from '../../utils/quality';
 import CommonStatus from '../common/CommonStatus.vue';
-import SkillItem from './SkillItem.vue';
+import SkillItem from '../common/SkillItem.vue';
 
 const { statData } = useStatData();
-
-// 品质排序权重
-const rarityOrder: Record<string, number> = {
-  神话: 6,
-  传说: 5,
-  史诗: 4,
-  稀有: 3,
-  优良: 2,
-  普通: 1,
-};
 
 // 获取并分类技能
 const skills = computed(() => {
@@ -23,37 +14,43 @@ const skills = computed(() => {
 
   const active: any[] = [];
   const passive: any[] = [];
+  const other: any[] = [];
 
   Object.entries(items).forEach(([key, skill]: [string, any]) => {
+    const skillType = safeGet(skill, '类型', '') as string;
     const skillInfo = {
       key,
       name: key,
       quality: safeGet(skill, '品质', ''),
       cost: safeGet(skill, '消耗', ''),
+      tags: safeGet(skill, '标签', ''),
+      effect: safeGet(skill, '效果', ''),
       description: safeGet(skill, '描述', ''),
-      type: safeGet(skill, '类型', ''),
+      type: skillType,
     };
 
-    if (skillInfo.type === '主动') {
+    if (skillType === '主动') {
       active.push(skillInfo);
-    } else if (skillInfo.type === '被动') {
+    } else if (skillType === '被动') {
       passive.push(skillInfo);
+    } else if (skillType) {
+      // 其他类型的技能
+      other.push(skillInfo);
     }
   });
 
   // 按品质排序
-  const sortByRarity = (a: any, b: any) => (rarityOrder[b.quality] || 0) - (rarityOrder[a.quality] || 0);
-
   active.sort(sortByRarity);
   passive.sort(sortByRarity);
+  other.sort(sortByRarity);
 
-  return { active, passive };
+  return { active, passive, other };
 });
 </script>
 
 <template>
   <CommonStatus title="💫 角色技能" variant="section" :default-open="false">
-    <div class="skills-grid">
+    <div class="skills-grid" :class="{ 'has-other': skills.other.length > 0 }">
       <!-- 主动技能列 -->
       <div class="skills-column">
         <h3 class="skills-category-title">🌀 主动技能</h3>
@@ -64,6 +61,8 @@ const skills = computed(() => {
             :name="skill.name"
             :quality="skill.quality"
             :cost="skill.cost"
+            :tags="skill.tags"
+            :effect="skill.effect"
             :description="skill.description"
             type="active"
           />
@@ -80,11 +79,32 @@ const skills = computed(() => {
             :key="skill.key"
             :name="skill.name"
             :quality="skill.quality"
+            :tags="skill.tags"
+            :effect="skill.effect"
             :description="skill.description"
             type="passive"
           />
         </div>
         <p v-else class="empty-message value-main">尚未拥有任何被动技能</p>
+      </div>
+
+      <!-- 其他技能列 -->
+      <div v-if="skills.other.length > 0" class="skills-column">
+        <h3 class="skills-category-title">✨ 其他技能</h3>
+        <div class="skills-list">
+          <SkillItem
+            v-for="skill in skills.other"
+            :key="skill.key"
+            :name="skill.name"
+            :quality="skill.quality"
+            :cost="skill.cost"
+            :tags="skill.tags"
+            :effect="skill.effect"
+            :description="skill.description"
+            :other-type-name="skill.type"
+            type="other"
+          />
+        </div>
       </div>
     </div>
   </CommonStatus>
@@ -105,8 +125,27 @@ const skills = computed(() => {
     grid-row: 1;
     width: 1px;
     height: 100%;
-    background-color: #d3c5b3;
+    background-color: var(--theme-border-light);
     justify-self: center;
+  }
+
+  /* 有其他技能时改为垂直布局 */
+  &.has-other {
+    grid-template-columns: 1fr;
+    gap: 20px;
+
+    &::before {
+      display: none;
+    }
+
+    .skills-column {
+      grid-column: 1;
+
+      &:not(:first-child) {
+        padding-top: 15px;
+        border-top: 1px solid var(--theme-border-light);
+      }
+    }
   }
 }
 
@@ -128,7 +167,7 @@ const skills = computed(() => {
   font-family: 'Cinzel', serif;
   font-size: 1em;
   font-weight: 700;
-  color: #5d4037;
+  color: var(--theme-text-tertiary);
   padding-bottom: 8px;
 }
 
@@ -139,7 +178,7 @@ const skills = computed(() => {
 }
 
 .empty-message {
-  color: #7a655d;
+  color: var(--theme-text-muted);
   font-style: italic;
   margin: 0;
 }
@@ -150,7 +189,8 @@ const skills = computed(() => {
     grid-template-columns: 1fr;
     gap: 20px;
 
-    &::before {
+    &::before,
+    &::after {
       display: none;
     }
   }
@@ -158,9 +198,9 @@ const skills = computed(() => {
   .skills-column {
     grid-column: 1 !important;
 
-    &:last-child {
+    &:not(:first-child) {
       padding-top: 10px;
-      border-top: 1px solid #d3c5b3;
+      border-top: 1px solid var(--theme-border-light);
     }
   }
 }

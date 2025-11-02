@@ -11,7 +11,7 @@ const goldLionNews = computed(() => safeGet(statData.value, '每日新闻.阿斯
 
 const tavernNews = computed(() => safeGet(statData.value, '每日新闻.酒馆留言板', ''));
 
-const teaPartyNews = computed(() => safeGet(statData.value, '每日新闻.红线助手的午后茶会', ''));
+const teaPartyNews = computed(() => safeGet(statData.value, '每日新闻.午后茶会', ''));
 
 // 触发更新新闻
 const handleUpdateNews = () => {
@@ -47,7 +47,7 @@ const handleUpdateNews = () => {
 
     <!-- 红线助手的午后茶会 -->
     <NewsSection
-      title="☕ 红线助手的午后茶会"
+      title="☕ 午后茶会"
       :content="teaPartyNews"
       empty-message="茶会上没什么新八卦"
       title-class="news-tea-party"
@@ -58,8 +58,8 @@ const handleUpdateNews = () => {
 <style lang="scss" scoped>
 /* 更新按钮 */
 .update-button {
-  background-color: #8d6e63;
-  color: white;
+  background-color: var(--theme-button-bg);
+  color: var(--theme-button-text);
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -71,7 +71,7 @@ const handleUpdateNews = () => {
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: #6d4c41;
+    background-color: var(--theme-button-bg-hover);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     transform: translateY(-2px);
   }
@@ -85,19 +85,19 @@ const handleUpdateNews = () => {
 /* 新闻标题样式 */
 :deep(.news-gold-lion) {
   font-family: 'Cinzel', serif;
-  color: #b9892d;
+  color: var(--theme-news-important);
   font-weight: 700;
 }
 
 :deep(.news-tavern) {
   font-family: 'Merriweather', serif;
-  color: #6d4c41;
+  color: var(--theme-news-normal);
   font-weight: 700;
 }
 
 :deep(.news-tea-party) {
   font-family: 'Cinzel', serif;
-  color: #c2185b;
+  color: var(--theme-news-minor);
   font-weight: 700;
 }
 </style>

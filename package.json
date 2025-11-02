@@ -75,6 +75,8 @@
     "gsap": "^3.13.0",
     "jquery": "^3.7.1",
     "jqueryui": "^1.11.1",
+    "json5": "^2.2.3",
+    "klona": "^2.0.6",
     "lodash": "^4.17.21",
     "pinia": "^3.0.3",
     "pixi.js": "^8.14.0",
@@ -94,5 +96,6 @@
       "unrs-resolver",
       "vue-demi"
     ]
-  }
+  },
+  "version": "0.1.0"
 }
