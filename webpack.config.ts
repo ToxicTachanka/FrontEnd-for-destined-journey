@@ -230,7 +230,7 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
               exclude: /node_modules/,
             },
             {
-              test: /\.html?$/,
+              test: /\.html$/,
               use: 'html-loader',
               exclude: /node_modules/,
             },
@@ -367,7 +367,7 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         new webpack.DefinePlugin({
           __VUE_OPTIONS_API__: false,
           __VUE_PROD_DEVTOOLS__: process.env.CI !== 'true',
-          __VUE_PROD_HYDRATION_MISMATCH_DETAIL__: false,
+          __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
         }),
       )
       .concat(
