@@ -51,9 +51,9 @@ const handleUpdateNews = () => {
 </script>
 
 <template>
-  <CommonStatus title="🌍 每日新闻" variant="section" :default-open="false">
+  <CommonStatus title="🌍 新闻资讯" variant="section" :default-open="false">
     <!-- 更新新闻按钮 -->
-    <button class="update-button" @click="handleUpdateNews">更新每日新闻</button>
+    <button class="update-button" @click="handleUpdateNews">更新新闻</button>
 
     <!-- 阿斯塔利亚快讯 -->
     <NewsSection
