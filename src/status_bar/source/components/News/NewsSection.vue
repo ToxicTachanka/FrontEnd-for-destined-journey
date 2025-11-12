@@ -100,27 +100,28 @@ const newsItems = computed(() => {
 .news-items {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .news-item {
   &:not(:last-child) {
-    padding-bottom: 12px;
+    padding-bottom: 8px;
     border-bottom: 1px solid var(--theme-border-secondary);
   }
 }
 
 .news-item-title {
-  font-weight: 600;
-  color: var(--theme-text-secondary);
-  margin-bottom: 6px;
-  font-size: 0.95em;
+  font-weight: 700;
+  color: var(--theme-text-tertiary);
+  font-size: 1em;
+  letter-spacing: 0.3px;
 }
 
 .news-item-content {
   white-space: pre-wrap;
-  line-height: 1.6;
+  line-height: 1.5;
   color: var(--theme-text-primary);
   padding-left: 8px;
+  font-size: 0.95em;
 }
 </style>
