@@ -24,7 +24,10 @@ fs.globSync('src/**/schema.ts').forEach(async schema_file => {
         schema = schema();
       }
       const jsonSchema = z.toJSONSchema(schema, { io: 'input', reused: 'ref' });
-      fs.writeFileSync(path.join(path.dirname(schema_file), 'schema.json'), JSON.stringify(jsonSchema, null, 2));
+      fs.writeFileSync(
+        path.join(path.dirname(schema_file), 'schema.json'),
+        JSON.stringify(jsonSchema, null, 2),
+      );
     }
   } catch (e) {
     console.error(`生成 '${schema_file}' 对应的 schema.json 失败: ${e}`);

@@ -104,6 +104,20 @@ export interface ThemeColors {
   openBg: string;
   /** 打开状态边框色 */
   openBorderColor: string;
+
+  // ===== 唯一品质卡片特殊样式 =====
+  /** 唯一卡片边框色 */
+  uniqueCardBorder: string;
+  /** 唯一卡片背景渐变起始色 */
+  uniqueCardBgStart: string;
+  /** 唯一卡片背景渐变结束色 */
+  uniqueCardBgEnd: string;
+  /** 唯一卡片标题背景色 */
+  uniqueCardTitleBg: string;
+  /** 唯一卡片展开时标题背景色 */
+  uniqueCardTitleBgOpen: string;
+  /** 唯一卡片展开时星标颜色 */
+  uniqueCardStarActive: string;
 }
 
 /**
@@ -144,13 +158,13 @@ export const defaultTheme: Theme = {
     textTertiary: '#5d4037',
     textMuted: '#7a655d',
 
-    // 品质颜色
-    qualityUnique: '#ff6f00',
-    qualityMythic: '#d32f2f',
-    qualityLegendary: '#9e7121',
-    qualityEpic: '#9c27b0',
-    qualityRare: '#193c96',
-    qualityUncommon: '#388e3c',
+    // 品质颜色 (基于 openBg #bfa996 优化，保持鲜艳度)
+    qualityUnique: '#b87333',
+    qualityMythic: '#c41e3a',
+    qualityLegendary: '#7a5c00',
+    qualityEpic: '#8b008b',
+    qualityRare: '#0066cc',
+    qualityUncommon: '#228b22',
 
     // 资源条颜色
     resourceHp: '#D32F2F',
@@ -183,5 +197,13 @@ export const defaultTheme: Theme = {
     titleBgHover: '#cbb8a5',
     openBg: '#bfa996',
     openBorderColor: '#a39281',
+
+    // 唯一品质卡片特殊样式
+    uniqueCardBorder: '#c4956a',
+    uniqueCardBgStart: '#fff8f0',
+    uniqueCardBgEnd: '#ffe8d4',
+    uniqueCardTitleBg: '#f5e1c8',
+    uniqueCardTitleBgOpen: '#e8c9a0',
+    uniqueCardStarActive: '#b8860b',
   },
 };

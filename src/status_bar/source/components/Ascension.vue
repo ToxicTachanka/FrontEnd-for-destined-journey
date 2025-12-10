@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useStatData } from '../composables/use-stat-data';
-import { compatGet, getExtensibleItems, safeGet } from '../utils/data-adapter';
+import { getExtensibleItems, safeGet } from '../utils/data-adapter';
 import CommonStatus from './common/CommonStatus.vue';
 
 // 定义类型
@@ -18,11 +18,10 @@ interface DivinityInfo {
 // 使用状态数据
 const { statData } = useStatData();
 
-// 获取用户等级（新路径：角色.等级，旧路径：角色.状态.等级）
+// 获取用户等级
 const userLevel = computed(() => {
   if (!statData.value) return 1;
-  const character = safeGet(statData.value, '角色', {});
-  return compatGet(character, '等级', '状态.等级', 1);
+  return safeGet(statData.value, '角色.等级', 1);
 });
 
 // 获取登神长阶数据
@@ -107,9 +106,19 @@ const summaryDetails = computed(() => {
 </script>
 
 <template>
-  <CommonStatus title="♾️ 登神长阶" variant="section" :summary-details="summaryDetails" :default-open="false">
+  <CommonStatus
+    title="♾️ 登神长阶"
+    variant="section"
+    :summary-details="summaryDetails"
+    :default-open="false"
+  >
     <!-- 要素 -->
-    <CommonStatus title="要素" variant="sub-section" :default-open="false" :locked="!isElementsUnlocked">
+    <CommonStatus
+      title="要素"
+      variant="sub-section"
+      :default-open="false"
+      :locked="!isElementsUnlocked"
+    >
       <template #title> 要素 <span class="step-level-req">13级开启</span> </template>
 
       <div v-if="isElementsUnlocked" class="step-items-container">
@@ -124,7 +133,12 @@ const summaryDetails = computed(() => {
     </CommonStatus>
 
     <!-- 权能 -->
-    <CommonStatus title="权能" variant="sub-section" :default-open="false" :locked="!isAuthorityUnlocked">
+    <CommonStatus
+      title="权能"
+      variant="sub-section"
+      :default-open="false"
+      :locked="!isAuthorityUnlocked"
+    >
       <template #title> 权能 <span class="step-level-req">17级开启</span> </template>
 
       <div v-if="isAuthorityUnlocked" class="step-items-container">
@@ -139,7 +153,12 @@ const summaryDetails = computed(() => {
     </CommonStatus>
 
     <!-- 法则 -->
-    <CommonStatus title="法则" variant="sub-section" :default-open="false" :locked="!isLawsUnlocked">
+    <CommonStatus
+      title="法则"
+      variant="sub-section"
+      :default-open="false"
+      :locked="!isLawsUnlocked"
+    >
       <template #title> 法则 <span class="step-level-req">21级开启</span> </template>
 
       <div v-if="isLawsUnlocked" class="step-items-container">
@@ -154,7 +173,12 @@ const summaryDetails = computed(() => {
     </CommonStatus>
 
     <!-- 神位 / 神国 -->
-    <CommonStatus title="神位 / 神国" variant="sub-section" :default-open="false" :locked="!isDivinityUnlocked">
+    <CommonStatus
+      title="神位 / 神国"
+      variant="sub-section"
+      :default-open="false"
+      :locked="!isDivinityUnlocked"
+    >
       <template #title> 神位 / 神国 <span class="step-level-req">25级开启</span> </template>
 
       <div v-if="isDivinityUnlocked" class="god-tier-grid">

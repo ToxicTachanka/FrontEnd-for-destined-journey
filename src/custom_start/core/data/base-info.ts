@@ -18,12 +18,12 @@ export const getGenders = computed(() => {
 
 export const getRaceCosts = computed(() => {
   const external = baseInfoData.value.raceCosts || {};
-  return { ...external, 自定义: 80 };
+  return { ...external, 自定义: 80 } as Record<string, number>;
 });
 
 export const getIdentityCosts = computed(() => {
   const external = baseInfoData.value.identityCosts || {};
-  return { ...external, 自定义: 80 };
+  return { ...external, 自定义: 80 } as Record<string, number>;
 });
 
 export const getStartLocations = computed(() => {
@@ -75,23 +75,6 @@ export const MIN_LEVEL = 1;
 
 // 基础属性值
 export const BASE_STAT = 4;
-
-export const raceAttrs: Record<string, Attributes> = {
-  地精: { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 },
-  人类: { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 },
-  兽族: { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 },
-  翼民: { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 },
-  矮人: { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 },
-  精灵: { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 },
-  亡灵种族: { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 },
-  深渊魔族: { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 },
-  巨人: { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 },
-  妖精: { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 },
-  血族: { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 },
-  龙族: { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 },
-  半身人: { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 },
-  女妖: { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 },
-};
 
 /**
  * 根据等级计算可用的【额外】AP点数

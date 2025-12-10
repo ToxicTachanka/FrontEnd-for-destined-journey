@@ -9,10 +9,17 @@ import {
   getRaceCosts,
   getTierAttributeBonus,
   INITIAL_REINCARNATION_POINTS,
-  raceAttrs,
 } from '../data/base-info';
 import { getActiveSkills, getPassiveSkills } from '../data/skills';
-import type { Attributes, Background, CharacterConfig, DestinedOne, Equipment, Item, Skill } from '../types';
+import type {
+  Attributes,
+  Background,
+  CharacterConfig,
+  DestinedOne,
+  Equipment,
+  Item,
+  Skill,
+} from '../types';
 
 export const useCharacterStore = defineStore('character', () => {
   // State
@@ -229,15 +236,10 @@ export const useCharacterStore = defineStore('character', () => {
 
   // 最终属性计算
   const finalAttributes = computed(() => {
-    let extraRaceAttrs = { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 };
-    const displayRace = character.value.race === '自定义' ? character.value.customRace : character.value.race;
     const tierBonus = getTierAttributeBonus(character.value.level);
     const result: Partial<Attributes> = {};
-    if (raceAttrs[displayRace] !== undefined) {
-      extraRaceAttrs = raceAttrs[displayRace];
-    }
     for (const attr of ATTRIBUTES) {
-      result[attr] = BASE_STAT + tierBonus + character.value.attributePoints[attr] + extraRaceAttrs[attr];
+      result[attr] = BASE_STAT + tierBonus + character.value.attributePoints[attr];
     }
     return result as Attributes;
   });
@@ -262,10 +264,13 @@ export const useCharacterStore = defineStore('character', () => {
     () => [character.value.race, character.value.customRace],
     () => {
       // 获取当前种族（包括自定义种族）
-      const currentRace = character.value.race === '自定义' ? character.value.customRace : character.value.race;
+      const currentRace =
+        character.value.race === '自定义' ? character.value.customRace : character.value.race;
 
       // 获取所有种族列表
-      const raceSpecificCategories = Object.keys(getRaceCosts.value).filter(race => race !== '自定义');
+      const raceSpecificCategories = Object.keys(getRaceCosts.value).filter(
+        race => race !== '自定义',
+      );
 
       // 获取技能数据
       const activeSkills = getActiveSkills();

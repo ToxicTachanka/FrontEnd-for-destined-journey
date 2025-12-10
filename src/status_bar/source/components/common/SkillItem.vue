@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getQualityClass } from '../../utils/quality';
+import { getCardQualityClass, getQualityClass } from '../../utils/quality';
 import CommonStatus from '../common/CommonStatus.vue';
 
 interface Props {
@@ -78,7 +78,7 @@ const summaryDetails = computed(() => {
     :title="skillTitle"
     variant="entry"
     :default-open="false"
-    custom-class="skill-item"
+    :custom-class="`skill-item ${getCardQualityClass(quality)}`"
     :summary-details="summaryDetails"
     :in-split-layout="inSplitLayout"
   >

@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed, inject, type Ref, watch } from 'vue';
-import { FormInput, FormLabel, FormNumber, FormSelect, FormStepper, FormTextarea } from '../../components/Form';
+import {
+  FormInput,
+  FormLabel,
+  FormNumber,
+  FormSelect,
+  FormStepper,
+  FormTextarea,
+} from '../../components/Form';
 import {
   ATTRIBUTES,
   BASE_STAT,
@@ -13,7 +20,6 @@ import {
   getTierAttributeBonus,
   MAX_LEVEL,
   MIN_LEVEL,
-  raceAttrs,
 } from '../../data/base-info';
 import { useCharacterStore } from '../../store';
 
@@ -36,11 +42,6 @@ const identityOptions = computed(() => Object.keys(identityCosts.value));
 
 // 计算当前等级的层级属性加成
 const tierAttributeBonus = computed(() => getTierAttributeBonus(character.value.level));
-
-const raceAttributeBonus = computed(() => {
-  const displayRace = character.value.race === '自定义' ? character.value.customRace : character.value.race;
-  return raceAttrs[displayRace] || { 力量: 0, 敏捷: 0, 体质: 0, 智力: 0, 精神: 0 };
-});
 
 // 计算剩余可用转生点数
 const availableReincarnationPoints = computed(() => {
@@ -90,14 +91,16 @@ const randomGenerate = () => {
 
   // 随机身份（排除自定义）
   const identities = identityOptions.value.filter(i => i !== '自定义');
-  character.value.identity = identities[Math.floor(Math.random() * identities.length)] || '自由平民';
+  character.value.identity =
+    identities[Math.floor(Math.random() * identities.length)] || '自由平民';
 
   // 随机等级 (1-10)
   character.value.level = Math.floor(Math.random() * MAX_LEVEL) + MIN_LEVEL;
 
   // 随机出生地（排除自定义）
   const locations = startLocations.value.filter(l => l !== '自定义');
-  character.value.startLocation = locations[Math.floor(Math.random() * locations.length)] || '自定义';
+  character.value.startLocation =
+    locations[Math.floor(Math.random() * locations.length)] || '自定义';
 
   console.log('基本信息已随机生成');
 };
@@ -166,7 +169,9 @@ const resetPage = () => {
               raceOptions.map(race => ({
                 label:
                   race +
-                  (raceCosts[race] !== 0 ? ` (${raceCosts[race] > 0 ? '-' : '+'}${Math.abs(raceCosts[race])}点)` : ''),
+                  (raceCosts[race] !== 0
+                    ? ` (${raceCosts[race] > 0 ? '-' : '+'}${Math.abs(raceCosts[race])}点)`
+                    : ''),
                 value: race,
               }))
             "
@@ -223,9 +228,13 @@ const resetPage = () => {
           <div class="ap-info">
             <span
               >剩余AP:
-              <strong :class="{ error: characterStore.remainingAP < 0, success: characterStore.remainingAP === 0 }">{{
-                characterStore.remainingAP
-              }}</strong>
+              <strong
+                :class="{
+                  error: characterStore.remainingAP < 0,
+                  success: characterStore.remainingAP === 0,
+                }"
+                >{{ characterStore.remainingAP }}</strong
+              >
               / {{ characterStore.maxAP }}</span
             >
           </div>
@@ -245,15 +254,19 @@ const resetPage = () => {
               />
               <div class="attribute-display">
                 {{ BASE_STAT }} <span class="dim">(基础)</span> + {{ tierAttributeBonus }}
-                <span class="dim">(层级)</span> + {{ raceAttributeBonus[attr] }} <span class="dim">(物种)</span> +
-                {{ character.attributePoints[attr] }} <span class="dim">(额外)</span> =
+                <span class="dim">(层级)</span> + {{ character.attributePoints[attr] }}
+                <span class="dim">(额外)</span> =
                 <strong class="final-value">{{ characterStore.finalAttributes[attr] }}</strong>
               </div>
             </div>
           </div>
 
-          <div v-if="availableReincarnationPoints < 0" class="status-message error">⚠️ 转生点数不足！</div>
-          <div v-else-if="characterStore.remainingAP === 0" class="status-message success">✓ 属性点已全部分配</div>
+          <div v-if="availableReincarnationPoints < 0" class="status-message error">
+            ⚠️ 转生点数不足！
+          </div>
+          <div v-else-if="characterStore.remainingAP === 0" class="status-message success">
+            ✓ 属性点已全部分配
+          </div>
           <div v-else-if="characterStore.remainingAP > 0" class="status-message info">
             还有 {{ characterStore.remainingAP }} 点未分配
           </div>

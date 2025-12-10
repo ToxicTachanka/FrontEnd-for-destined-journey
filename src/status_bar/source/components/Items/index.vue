@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useStatData } from '../../composables/use-stat-data';
-import { compatGet, getExtensibleItems, safeGet } from '../../utils/data-adapter';
+import { getExtensibleItems, safeGet } from '../../utils/data-adapter';
 import { sortByRarity } from '../../utils/quality';
 import CommonStatus from '../common/CommonStatus.vue';
 import ItemEntry from './ItemEntry.vue';
@@ -20,8 +20,7 @@ const typeOrder: Record<string, number> = {
 const currencyData = computed(() => {
   if (!statData.value) return { gold: 0, silver: 0, copper: 0 };
 
-  // 新路径：货币，旧路径：财产.货币
-  const currency = compatGet(statData.value, '货币', '财产.货币', {});
+  const currency = safeGet(statData.value, '货币', {});
   return {
     gold: safeGet(currency, '金币', 0),
     silver: safeGet(currency, '银币', 0),
@@ -33,8 +32,7 @@ const currencyData = computed(() => {
 const itemsData = computed(() => {
   if (!statData.value) return [];
 
-  // 新路径：背包，旧路径：财产.背包
-  const inventoryData = compatGet(statData.value, '背包', '财产.背包', {});
+  const inventoryData = safeGet(statData.value, '背包', {});
   const items = getExtensibleItems(inventoryData);
 
   return Object.entries(items).map(([itemName, itemData]: [string, any]) => ({
@@ -93,7 +91,12 @@ const summaryDetails = computed(() => {
 </script>
 
 <template>
-  <CommonStatus title="🎒 角色背包" variant="section" :default-open="false" :summary-details="summaryDetails">
+  <CommonStatus
+    title="🎒 角色背包"
+    variant="section"
+    :default-open="false"
+    :summary-details="summaryDetails"
+  >
     <!-- 货币显示 -->
     <div class="currency-section">
       <p class="property-name">💰 货币:</p>

@@ -35,7 +35,25 @@ const colorGroups = {
   },
   quality: {
     label: '品质颜色',
-    keys: ['qualityUnique', 'qualityMythic', 'qualityLegendary', 'qualityEpic', 'qualityRare', 'qualityUncommon'],
+    keys: [
+      'qualityUnique',
+      'qualityMythic',
+      'qualityLegendary',
+      'qualityEpic',
+      'qualityRare',
+      'qualityUncommon',
+    ],
+  },
+  uniqueCard: {
+    label: '唯一品质卡片',
+    keys: [
+      'uniqueCardBorder',
+      'uniqueCardBgStart',
+      'uniqueCardBgEnd',
+      'uniqueCardTitleBg',
+      'uniqueCardTitleBgOpen',
+      'uniqueCardStarActive',
+    ],
   },
   button: {
     label: '按钮颜色',
@@ -85,6 +103,12 @@ const colorLabels: Record<keyof ThemeColors, string> = {
   qualityEpic: '史诗品质',
   qualityRare: '稀有品质',
   qualityUncommon: '精良品质',
+  uniqueCardBorder: '唯一卡片边框',
+  uniqueCardBgStart: '唯一卡片背景(起)',
+  uniqueCardBgEnd: '唯一卡片背景(终)',
+  uniqueCardTitleBg: '唯一卡片标题',
+  uniqueCardTitleBgOpen: '唯一卡片标题(展开)',
+  uniqueCardStarActive: '唯一卡片星标',
   resourceHp: '生命值',
   resourceMp: '法力值',
   resourceSp: '体力值',
@@ -122,7 +146,9 @@ const currentGroupColors = computed(() => {
 
 // 判断颜色值是否为数字型（透明度或宽度）
 const isNumericValue = (key: keyof ThemeColors): boolean => {
-  return key === 'backgroundOpacity' || key === 'backgroundTertiaryOpacity' || key === 'mainBorderWidth';
+  return (
+    key === 'backgroundOpacity' || key === 'backgroundTertiaryOpacity' || key === 'mainBorderWidth'
+  );
 };
 
 // 获取数值范围
@@ -157,7 +183,12 @@ const handleReset = async () => {
 
 <template>
   <!-- 浮动按钮 -->
-  <button class="floating-btn" :class="{ active: isEditing }" title="主题设置" @click="isEditing = !isEditing">
+  <button
+    class="floating-btn"
+    :class="{ active: isEditing }"
+    title="主题设置"
+    @click="isEditing = !isEditing"
+  >
     <i class="fa-solid fa-gear"></i>
   </button>
 
@@ -208,7 +239,13 @@ const handleReset = async () => {
                     :min="getNumericRange(item.key).min"
                     :max="getNumericRange(item.key).max"
                     :step="getNumericRange(item.key).step"
-                    @input="e => handleColorChange(item.key, parseFloat((e.target as HTMLInputElement).value))"
+                    @input="
+                      e =>
+                        handleColorChange(
+                          item.key,
+                          parseFloat((e.target as HTMLInputElement).value),
+                        )
+                    "
                   />
                   <span class="value-display">{{ item.value }}</span>
                 </template>

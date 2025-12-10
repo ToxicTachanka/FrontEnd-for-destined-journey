@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getQualityClass } from '../../utils/quality';
+import { getCardQualityClass, getQualityClass } from '../../utils/quality';
 import CommonStatus from '../common/CommonStatus.vue';
 
 interface Props {
@@ -60,7 +60,7 @@ const summaryDetails = computed(() => {
     :title="equipmentTitle"
     variant="entry"
     :default-open="false"
-    custom-class="equipment-entry"
+    :custom-class="`equipment-entry ${getCardQualityClass(quality)}`"
     :summary-details="summaryDetails"
   >
     <template #title>

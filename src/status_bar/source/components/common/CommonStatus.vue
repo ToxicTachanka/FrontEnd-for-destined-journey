@@ -217,7 +217,7 @@ const onAfterLeave = (el: Element) => {
     color: var(--theme-text-primary);
   }
 
-  .is-open & {
+  .is-open > & {
     background-color: var(--theme-open-bg);
     border-bottom-color: var(--theme-open-border-color);
   }

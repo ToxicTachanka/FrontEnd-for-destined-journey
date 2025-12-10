@@ -31,6 +31,15 @@ export function getQualityClass(quality: string): string {
 }
 
 /**
+ * 获取卡片品质对应的 CSS 类名（用于整个卡片容器）
+ * @param quality 品质字符串
+ * @returns 对应的卡片 CSS 类名
+ */
+export function getCardQualityClass(quality: string): string {
+  return quality === '唯一' ? 'card-unique' : '';
+}
+
+/**
  * 获取品质的排序权重
  * @param quality 品质名称
  * @returns 排序权重，未知品质返回 0

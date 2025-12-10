@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useStatData } from '../../composables/use-stat-data';
-import { compatGet, safeGet } from '../../utils/data-adapter';
+import { safeGet } from '../../utils/data-adapter';
 import { sortItemsByRarity } from '../../utils/quality';
 import CommonStatus from '../common/CommonStatus.vue';
 import EquipmentSlot from '../common/EquipmentSlot.vue';
@@ -24,8 +24,7 @@ const equipmentData = computed(() => {
     }));
   }
 
-  // 新路径：装备，旧路径：财产.装备
-  const equipment = compatGet(statData.value, '装备', '财产.装备', {});
+  const equipment = safeGet(statData.value, '装备', {});
 
   return equipmentCategories.map(category => {
     const categoryData = safeGet(equipment, category.key, {});
@@ -81,7 +80,9 @@ const totalEquipmentCount = computed(() => {
         <!-- 按类别分栏显示 -->
         <div v-for="category in equipmentData" :key="category.key" class="equipment-column">
           <h3 class="equipment-category-title">{{ category.title }}</h3>
-          <div v-if="category.items.length === 0" class="empty-category">暂无{{ category.key }}</div>
+          <div v-if="category.items.length === 0" class="empty-category">
+            暂无{{ category.key }}
+          </div>
           <div v-else class="equipment-list">
             <EquipmentSlot
               v-for="item in category.items"

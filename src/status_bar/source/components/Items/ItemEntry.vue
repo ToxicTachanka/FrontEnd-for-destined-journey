@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getQualityClass } from '../../utils/quality';
+import { getCardQualityClass, getQualityClass } from '../../utils/quality';
 import CommonStatus from '../common/CommonStatus.vue';
 
 interface Props {
@@ -43,7 +43,9 @@ const summaryDetails = computed(() => {
 
 // 检查是否是"其它物品"类型
 const isOtherItem = computed(() => {
-  return props.type && props.type !== '武器防具' && props.type !== '消耗品' && props.type !== '材料';
+  return (
+    props.type && props.type !== '武器防具' && props.type !== '消耗品' && props.type !== '材料'
+  );
 });
 
 // 检查标签是否有效（不为空且不是"无"）
@@ -57,7 +59,7 @@ const hasValidTags = computed(() => {
     :title="itemTitle"
     variant="entry"
     :default-open="false"
-    custom-class="item-entry"
+    :custom-class="`item-entry ${getCardQualityClass(quality)}`"
     :summary-details="summaryDetails"
   >
     <template #title>

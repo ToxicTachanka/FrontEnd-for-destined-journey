@@ -18,7 +18,6 @@
 .quality-unique {
   color: var(--theme-quality-unique);
   font-weight: bold;
-  text-shadow: 0 0 3px rgba(255, 111, 0, 0.3);
 }
 
 .quality-mythic {
@@ -44,4 +43,39 @@
 .quality-uncommon {
   color: var(--theme-quality-uncommon);
   font-weight: bold;
+}
+
+/* 唯一品质卡片特殊样式 */
+.card-unique {
+  border: 1px solid var(--theme-unique-card-border) !important;
+  background: linear-gradient(
+    135deg,
+    var(--theme-unique-card-bg-start) 0%,
+    var(--theme-unique-card-bg-end) 100%
+  ) !important;
+
+  .summary {
+    background: var(--theme-unique-card-title-bg) !important;
+    border-bottom-color: var(--theme-unique-card-border) !important;
+  }
+
+  &.is-open > .summary {
+    background: var(--theme-unique-card-title-bg-open) !important;
+  }
+
+  .icon-star.is-open {
+    color: var(--theme-unique-card-star-active) !important;
+    text-shadow:
+      0 0 3px rgba(255, 255, 255, 0.8),
+      0 0 6px var(--theme-unique-card-star-active),
+      0 0 10px #cd853f !important;
+  }
+
+  .details-content {
+    background: linear-gradient(
+      180deg,
+      var(--theme-unique-card-bg-start) 0%,
+      var(--theme-unique-card-bg-end) 100%
+    ) !important;
+  }
 }
