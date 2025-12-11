@@ -64,7 +64,7 @@ export interface DestinedOne {
       description: string;
     };
   };
-  isContract: string;
+  isContract: boolean;
   affinity: number;
   comment?: string;
   backgroundInfo?: string;

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { toggleDestinyCharacterPresence } from '../../composables/use-mvu';
 import { getExtensibleItems, safeGet, toBoolean } from '../../utils/data-adapter';
 import { sortItemsByRarity } from '../../utils/quality';
 import CommonStatus from '../common/CommonStatus.vue';
@@ -70,6 +71,39 @@ const props = withDefaults(defineProps<Props>(), {
   evaluation: '',
   backstory: '未知',
   skills: () => ({}),
+});
+
+// 是否在场的响应式状态（用于 UI 交互）
+const isPresent = ref(toBoolean(props.bePresent, true));
+const isToggling = ref(false);
+
+// 监听 props 变化同步状态
+watch(
+  () => props.bePresent,
+  newVal => {
+    isPresent.value = toBoolean(newVal, true);
+  },
+);
+
+// 切换在场状态（内部实现）
+const doTogglePresence = async () => {
+  if (isToggling.value) return;
+
+  isToggling.value = true;
+  try {
+    const success = await toggleDestinyCharacterPresence(props.name, isPresent.value);
+    if (success) {
+      isPresent.value = !isPresent.value;
+    }
+  } finally {
+    isToggling.value = false;
+  }
+};
+
+// 节流处理：500ms 内只允许触发一次，防止频繁点击
+const handleTogglePresence = _.throttle(doTogglePresence, 500, {
+  leading: true,
+  trailing: false,
 });
 
 // 响应式的窗口宽度
@@ -293,7 +327,6 @@ const ascensionSummary = computed(() => {
 
 // 基本信息数据结构
 const basicInfoFields = computed(() => [
-  { icon: '✔️', label: '是否在场', value: toBoolean(props.bePresent, true) ? '是' : '否' },
   { icon: '⚜️', label: '生命层级', value: props.lifeLevel },
   { icon: '🎯', label: '等级', value: String(props.level) },
   { icon: '🧬', label: '种族', value: props.race },
@@ -336,6 +369,21 @@ const destinyFields = computed(() => [
   >
     <!-- 基本信息区 -->
     <div class="info-section">
+      <!-- 是否在场：交互式切换 -->
+      <div class="info-row presence-row">
+        <span class="property-name"><i class="fa-solid fa-location-dot"></i> 是否在场:</span>
+        <button
+          class="presence-toggle"
+          :class="{ present: isPresent, absent: !isPresent, toggling: isToggling }"
+          :disabled="isToggling"
+          @click="handleTogglePresence"
+        >
+          <i :class="isPresent ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark'"></i>
+          <span class="toggle-text">{{ isPresent ? '在场' : '离场' }}</span>
+          <span v-if="isToggling" class="toggle-loading">...</span>
+        </button>
+      </div>
+
       <div
         v-for="field in basicInfoFields"
         :key="field.label"
@@ -535,6 +583,120 @@ const destinyFields = computed(() => [
     .value-main {
       padding-left: 1.5em;
     }
+  }
+}
+
+/* 是否在场切换按钮 */
+.presence-row {
+  align-items: center;
+
+  .property-name {
+    i {
+      margin-right: 4px;
+      color: var(--theme-text-tertiary);
+    }
+  }
+}
+
+.presence-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  font-weight: 500;
+  position: relative;
+
+  /* 拟物化凸起效果 */
+  border: none;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.15),
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+
+  i {
+    font-size: 0.95em;
+  }
+
+  .toggle-text {
+    letter-spacing: 0.5px;
+  }
+
+  &.present {
+    background-color: var(--theme-toggle-on-bg, #d4edda);
+    color: var(--theme-toggle-on-text, #155724);
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.05);
+      box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.2),
+        0 2px 4px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      filter: brightness(0.95);
+      box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.2),
+        inset 0 1px 2px rgba(0, 0, 0, 0.15);
+      transform: translateY(0);
+    }
+  }
+
+  &.absent {
+    background-color: var(--theme-toggle-off-bg, #e9ecef);
+    color: var(--theme-toggle-off-text, #6c757d);
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.05);
+      box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.2),
+        0 2px 4px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      filter: brightness(0.95);
+      box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.2),
+        inset 0 1px 2px rgba(0, 0, 0, 0.15);
+      transform: translateY(0);
+    }
+  }
+
+  &.toggling {
+    opacity: 0.7;
+    cursor: wait;
+    transform: none !important;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.toggle-loading {
+  margin-left: 2px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
   }
 }
 

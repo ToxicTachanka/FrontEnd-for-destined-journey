@@ -12,17 +12,14 @@ import {
 
 export const Schema = z.object({
   世界: z.object({ 时间: z.string(), 地点: z.string() }),
-  事件链: z
-    .any()
-    .prefault({})
-    .transform(() => ({
-      开启: z.boolean().prefault(false),
-      结束: z.boolean().prefault(false),
-      琥珀事件: z.boolean().prefault(false),
-      标题: z.string(),
-      阶段: z.string(),
-      已完成事件: z.array(z.string()),
-    })),
+  事件链: z.object({
+    开启: z.boolean().prefault(false),
+    结束: z.boolean().prefault(false),
+    琥珀事件: z.boolean().prefault(false),
+    标题: z.string(),
+    阶段: z.string(),
+    已完成事件: z.array(z.string()),
+  }),
   任务列表: z.record(z.string(), QuestSchema),
   角色: z
     .object({
@@ -30,9 +27,9 @@ export const Schema = z.object({
       身份: z.array(z.string()),
       职业: z.array(z.string()),
       生命层级: z.string().prefault('第一层级/普通层级'),
-      等级: z.coerce.number().prefault(1),
+      等级: clampedNum(1, 1, 25),
       累计经验值: z.coerce.number(),
-      升级所需经验: z.coerce.number().prefault(15),
+      升级所需经验: z.coerce.number().prefault(23),
       冒险者等级: z.string().prefault('未评级'),
       生命值上限: z.coerce.number(),
       生命值: z.coerce.number(),
@@ -45,15 +42,25 @@ export const Schema = z.object({
     })
     .transform(data => ({
       ...data,
+      升级所需经验: data.等级 >= 25 ? 'MAX' : data.升级所需经验,
       生命值: _.clamp(data.生命值, 0, data.生命值上限),
       法力值: _.clamp(data.法力值, 0, data.法力值上限),
       体力值: _.clamp(data.体力值, 0, data.体力值上限),
     })),
   背包: z.record(z.string(), InventoryItemSchema),
   货币: z.object({
-    金币: z.coerce.number().prefault(0),
-    银币: z.coerce.number().prefault(0),
-    铜币: z.coerce.number().prefault(0),
+    金币: z.coerce
+      .number()
+      .prefault(0)
+      .transform(val => Math.floor(Math.max(val, 0))),
+    银币: z.coerce
+      .number()
+      .prefault(0)
+      .transform(val => Math.floor(Math.max(val, 0))),
+    铜币: z.coerce
+      .number()
+      .prefault(0)
+      .transform(val => Math.floor(val)),
   }),
   装备: z.object({
     武器: z.record(z.string(), EquipmentSchema),
@@ -68,7 +75,7 @@ export const Schema = z.object({
       z.object({
         是否在场: z.boolean().prefault(true),
         生命层级: z.string(),
-        等级: z.coerce.number().prefault(1),
+        等级: clampedNum(1, 1, 25),
         种族: z.string(),
         身份: z.array(z.string()),
         职业: z.array(z.string()),

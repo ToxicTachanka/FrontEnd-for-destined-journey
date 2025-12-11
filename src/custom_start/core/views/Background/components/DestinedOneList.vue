@@ -115,7 +115,7 @@ const handleToggle = (item: DestinedOne) => {
           </div>
           <div class="info-row">
             <span class="label">是否缔结契约：</span>
-            <span class="value">{{ item.isContract }}</span>
+            <span class="value">{{ item.isContract ? '是' : '否' }}</span>
           </div>
         </div>
 

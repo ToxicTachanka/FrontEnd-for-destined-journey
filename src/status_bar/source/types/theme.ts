@@ -91,6 +91,16 @@ export interface ThemeColors {
   /** 次要新闻标题色 */
   newsMinor: string;
 
+  // ===== boolean 切换按钮 =====
+  /** 开启状态背景色 */
+  toggleOnBg: string;
+  /** 开启状态文字色 */
+  toggleOnText: string;
+  /** 关闭状态背景色 */
+  toggleOffBg: string;
+  /** 关闭状态文字色 */
+  toggleOffText: string;
+
   // ===== CommonStatus 特殊状态 =====
   /** 禁用状态背景色 */
   disabledBg: string;
@@ -189,6 +199,12 @@ export const defaultTheme: Theme = {
     newsImportant: '#b9892d',
     newsNormal: '#6d4c41',
     newsMinor: '#c2185b',
+
+    // boolean 切换按钮
+    toggleOnBg: '#d4edda',
+    toggleOnText: '#155724',
+    toggleOffBg: '#e9ecef',
+    toggleOffText: '#6c757d',
 
     // CommonStatus 特殊状态
     disabledBg: '#e8e4e0',

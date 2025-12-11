@@ -59,6 +59,10 @@ const colorGroups = {
     label: '按钮颜色',
     keys: ['buttonBg', 'buttonBgHover', 'buttonText'],
   },
+  toggle: {
+    label: '切换按钮',
+    keys: ['toggleOnBg', 'toggleOnText', 'toggleOffBg', 'toggleOffText'],
+  },
   progress: {
     label: '进度条颜色',
     keys: [
@@ -131,6 +135,10 @@ const colorLabels: Record<keyof ThemeColors, string> = {
   titleBgHover: '标题悬停',
   openBg: '打开背景',
   openBorderColor: '打开边框',
+  toggleOnBg: '开启状态背景',
+  toggleOnText: '开启状态文字',
+  toggleOffBg: '关闭状态背景',
+  toggleOffText: '关闭状态文字',
 };
 
 // 获取当前编辑组的颜色

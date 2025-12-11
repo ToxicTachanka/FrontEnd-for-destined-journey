@@ -104,7 +104,7 @@ const itemStairway = computed({
 
 const itemIsContract = computed({
   get: () => customContentStore.customDestinedOneForm.itemIsContract,
-  set: (value: string) => customContentStore.updateCustomDestinedOneForm('itemIsContract', value),
+  set: (value: boolean) => customContentStore.updateCustomDestinedOneForm('itemIsContract', value),
 });
 
 const itemAffinity = computed({
@@ -428,11 +428,11 @@ const handleAdd = () => {
         <FormLabel label="是否缔结契约" />
         <div class="radio-group">
           <label class="radio-label">
-            <input v-model="itemIsContract" type="radio" value="是" />
+            <input v-model="itemIsContract" type="radio" :value="true" />
             是
           </label>
           <label class="radio-label">
-            <input v-model="itemIsContract" type="radio" value="否" />
+            <input v-model="itemIsContract" type="radio" :value="false" />
             否
           </label>
         </div>

@@ -73,18 +73,18 @@ export const CharacterAttributeSchema = BaseAttributeSchema.extend({
 
 // 神国 schema
 export const DivineRealmSchema = z.object({
-  名称: z.string(),
-  描述: z.string(),
+  名称: z.string().prefault(''),
+  描述: z.string().prefault(''),
 });
 
 // 登神长阶 schema
 export const AscensionSchema = z.object({
   是否开启: z.boolean().prefault(false),
-  要素: z.record(z.string(), z.string()),
-  权能: z.record(z.string(), z.string()),
-  法则: z.record(z.string(), z.string()),
-  神位: z.string(),
-  神国: DivineRealmSchema,
+  要素: z.record(z.string(), z.string()).prefault({}),
+  权能: z.record(z.string(), z.string()).prefault({}),
+  法则: z.record(z.string(), z.string()).prefault({}),
+  神位: z.string().prefault(''),
+  神国: DivineRealmSchema.prefault({}),
 });
 
 // 任务 schema

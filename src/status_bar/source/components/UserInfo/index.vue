@@ -17,7 +17,7 @@ const resourcesData = computed(() => {
       hp: { current: 0, max: 0 },
       mp: { current: 0, max: 0 },
       sp: { current: 0, max: 0 },
-      exp: { current: 0, needed: 0, isMaxLevel: false },
+      exp: { current: 0, needed: 0 as number | 'MAX', isMaxLevel: false },
     };
 
   const character = safeGet(statData.value, '角色', {});
@@ -40,7 +40,7 @@ const resourcesData = computed(() => {
     },
     exp: {
       current: safeGet(character, '累计经验值', 0),
-      needed: safeGet(character, '升级所需经验', 0),
+      needed: safeGet(character, '升级所需经验', 0) as number | 'MAX',
       isMaxLevel,
     },
   };

@@ -6,8 +6,8 @@ interface Props {
   icon: string;
   /** 当前值 */
   current: number;
-  /** 最大值 */
-  max: number;
+  /** 最大值（数值或 'MAX' 表示满级） */
+  max: number | 'MAX';
   /** 进度条颜色 */
   color: string;
   /** 是否达到最高等级（仅对经验条有效） */
@@ -18,18 +18,22 @@ const props = withDefaults(defineProps<Props>(), {
   isMaxLevel: false,
 });
 
+// 判断是否为满级状态（通过 isMaxLevel 或 max === 'MAX'）
+const isMaxed = computed(() => props.isMaxLevel || props.max === 'MAX');
+
 // 计算进度条百分比
 const getPercentage = computed(() => {
   // 如果达到最高等级，进度条填满
-  if (props.isMaxLevel) {
+  if (isMaxed.value) {
     return 100;
   }
-  return Math.min(100, (props.current / props.max) * 100);
+  // max 为 number 时正常计算
+  return Math.min(100, (props.current / (props.max as number)) * 100);
 });
 
 // 显示的最大值文本
 const maxDisplayText = computed(() => {
-  return props.isMaxLevel ? 'MAX' : props.max;
+  return isMaxed.value ? 'MAX' : props.max;
 });
 </script>
 
@@ -38,7 +42,7 @@ const maxDisplayText = computed(() => {
     <div class="resource-label">
       <span class="property-name">{{ icon }} {{ label }}:</span>
       <span class="value-main">{{ current }}</span> /
-      <span class="value-main" :class="{ 'max-level': isMaxLevel }">{{ maxDisplayText }}</span>
+      <span class="value-main" :class="{ 'max-level': isMaxed }">{{ maxDisplayText }}</span>
     </div>
     <div class="progress-bar-container">
       <div

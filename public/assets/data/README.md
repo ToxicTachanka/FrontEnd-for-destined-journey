@@ -251,7 +251,7 @@ public/assets/data/
         "mind": 21
       },
       "stairway": {  // 命定之人的登神长阶
-        "isOpen": "是",
+        "isOpen": true,  // 是否开启登神长阶 (true/false)
         "elements": {  // 登神长阶的元素（格式为 "名称": "效果与描述"）
           "光明": "所有攻击都附带光明属性，对黑暗与亡灵生物造成额外20%的伤害",
           "秩序": "免疫所有混乱与精神控制效果。施加的增益或减益效果持续时间延长1回合",
@@ -269,7 +269,7 @@ public/assets/data/
           "description": "以辉煌女神的神力开辟的专属次位面。一个由纯粹的光与秩序构成的世界，没有黑夜与混乱。在神国内，索拉莉娅全知全能，可以随意修改物理与魔法规则"
         }
       },
-      "isContract": "是",  // 命定之人是否与<user>缔结契约
+      "isContract": true,  // 命定之人是否与<user>缔结契约 (true/false)
       "affinity": 50,        // 命定之人的好感度
       "comment": "${对<user>的评价}",  // 命定之人对<user>的评价
       "backgroundInfo": "（命定之人的背景故事）",

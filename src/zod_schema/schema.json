@@ -18,7 +18,35 @@
       ]
     },
     "事件链": {
-      "default": {}
+      "type": "object",
+      "properties": {
+        "开启": {
+          "type": "boolean"
+        },
+        "结束": {
+          "type": "boolean"
+        },
+        "琥珀事件": {
+          "type": "boolean"
+        },
+        "标题": {
+          "type": "string"
+        },
+        "阶段": {
+          "type": "string"
+        },
+        "已完成事件": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "标题",
+        "阶段",
+        "已完成事件"
+      ]
     },
     "任务列表": {
       "type": "object",
@@ -75,7 +103,7 @@
           "type": "number"
         },
         "升级所需经验": {
-          "default": 15,
+          "default": 23,
           "type": "number"
         },
         "冒险者等级": {
@@ -498,6 +526,7 @@
   },
   "required": [
     "世界",
+    "事件链",
     "任务列表",
     "角色",
     "背包",
@@ -600,6 +629,7 @@
           "type": "boolean"
         },
         "要素": {
+          "default": {},
           "type": "object",
           "propertyNames": {
             "type": "string"
@@ -609,6 +639,7 @@
           }
         },
         "权能": {
+          "default": {},
           "type": "object",
           "propertyNames": {
             "type": "string"
@@ -618,6 +649,7 @@
           }
         },
         "法则": {
+          "default": {},
           "type": "object",
           "propertyNames": {
             "type": "string"
@@ -630,6 +662,7 @@
           "type": "string"
         },
         "神国": {
+          "default": {},
           "type": "object",
           "properties": {
             "名称": {
@@ -638,20 +671,9 @@
             "描述": {
               "type": "string"
             }
-          },
-          "required": [
-            "名称",
-            "描述"
-          ]
+          }
         }
-      },
-      "required": [
-        "要素",
-        "权能",
-        "法则",
-        "神位",
-        "神国"
-      ]
+      }
     }
   }
 }
