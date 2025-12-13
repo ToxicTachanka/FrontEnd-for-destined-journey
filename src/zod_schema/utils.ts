@@ -1,3 +1,11 @@
+/**
+ * 布尔值转换
+ */
+export const coercedBoolean = (defaultVal: boolean = false) =>
+  z
+    .preprocess(val => (typeof val === 'string' ? val === '是' : val), z.boolean())
+    .prefault(defaultVal);
+
 /** 数值范围限制 */
 export const clamp = (min: number, max: number) => (val: number) => _.clamp(val, min, max);
 
@@ -79,7 +87,7 @@ export const DivineRealmSchema = z.object({
 
 // 登神长阶 schema
 export const AscensionSchema = z.object({
-  是否开启: z.boolean().prefault(false),
+  是否开启: coercedBoolean(false),
   要素: z.record(z.string(), z.string()).prefault({}),
   权能: z.record(z.string(), z.string()).prefault({}),
   法则: z.record(z.string(), z.string()).prefault({}),

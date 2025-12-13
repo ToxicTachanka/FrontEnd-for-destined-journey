@@ -3,6 +3,7 @@ import {
   BaseAttributeSchema,
   CharacterAttributeSchema,
   clampedNum,
+  coercedBoolean,
   DestinedEquipmentSchema,
   EquipmentSchema,
   InventoryItemSchema,
@@ -73,7 +74,7 @@ export const Schema = z.object({
     命定之人: z.record(
       z.string(),
       z.object({
-        是否在场: z.boolean().prefault(true),
+        是否在场: coercedBoolean(true),
         生命层级: z.string(),
         等级: clampedNum(1, 1, 25),
         种族: z.string(),
@@ -86,7 +87,7 @@ export const Schema = z.object({
         装备: z.record(z.string(), DestinedEquipmentSchema),
         属性: BaseAttributeSchema,
         登神长阶: AscensionSchema,
-        是否缔结契约: z.boolean().prefault(false),
+        是否缔结契约: coercedBoolean(false),
         好感度: clampedNum(0, -100, 100),
         评价: z.string(),
         背景故事: z.string(),

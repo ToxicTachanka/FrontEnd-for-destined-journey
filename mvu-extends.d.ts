@@ -2,6 +2,7 @@
  * MVU 变量框架完整类型声明
  * 此文件包含 MVU 的完整类型定义，由项目维护者手动维护
  * 基于 https://github.com/MagicalAstrogy/MagVarUpdate/blob/master/src/export_globals.ts
+ * 最近更新日期：2025-12-13
  */
 
 // ============================================================================
@@ -43,10 +44,7 @@ type CommandArgsMap = {
   add: AddCommandArgs;
 };
 
-// ============================================================================
 // Mvu 命名空间类型定义
-// ============================================================================
-
 declare namespace Mvu {
   /**
    * MVU 数据结构
@@ -119,63 +117,6 @@ declare namespace Mvu {
     args: [path: string, delta_or_toggle_literal: string];
     reason: string;
   };
-
-  /**
-   * 变量事件常量集合
-   */
-  interface VariableEvents {
-    /**
-     * 单个变量更新时触发的事件
-     * - 事件值: 'mag_variable_updated'
-     * - 回调签名: (stat_data: Record<string, any>, path: string, oldValue: any, newValue: any) => void
-     *   - stat_data: 完整的状态数据对象
-     *   - path: 被更新的变量路径（如 'player.health' 或 'items[0].name'）
-     *   - oldValue: 更新前的值
-     *   - newValue: 更新后的新值
-     * - 触发条件: 当通过 setMvuVariable / _.set 语句更新一个变量之后， 会触发这个事件
-     */
-    SINGLE_VARIABLE_UPDATED: 'mag_variable_updated';
-
-    /**
-     * 批量变量更新开始时触发的事件
-     * - 事件值: 'mag_variable_update_started'
-     * - 回调签名: (variables: MvuData, out_is_updated: boolean) => void
-     * - 触发时机: parseMessage 或 LLM消息回复结束 开始解析命令之前
-     */
-    VARIABLE_UPDATE_STARTED: 'mag_variable_update_started';
-
-    /**
-     * 批量变量更新结束时触发的事件
-     * - 事件值: 'mag_variable_update_ended'
-     * - 回调签名: (variables: MvuData, out_is_updated: boolean) => void
-     * - 触发时机: parseMessage 或 LLM消息回复结束 完成所有命令的处理后
-     */
-    VARIABLE_UPDATE_ENDED: 'mag_variable_update_ended';
-
-    /**
-     * 在进行 0 层消息初始化时会触发的事件
-     * - 事件值: 'mag_variable_initialized'
-     * - 回调签名: (variables: Record<string, any> & MvuData, swipe_id: number) => void
-     * - 触发时机: 在进行 0 层的变量初始化时，对每一个开场白(swipe) 都会调用一次
-     */
-    VARIABLE_INITIALIZED: 'mag_variable_initialized';
-
-    /**
-     * 解析完指令后，开始处理之前触发的事件
-     * - 事件值: 'mag_command_parsed'
-     * - 回调签名: (variables: MvuData, commands: CommandInfo[], message_content: string) => void
-     * - 触发时机: 解析完指令后，开始处理之前
-     */
-    COMMAND_PARSED: 'mag_command_parsed';
-
-    /**
-     * 在 MVU 即将对楼层变量进行更新的场合触发的事件
-     * - 事件值: 'mag_before_message_update'
-     * - 回调签名: (context: UpdateContext) => void
-     * - 触发时机: 完成变量更新操作，即将插入 <StatusPlaceHolderImpl/> 前
-     */
-    BEFORE_MESSAGE_UPDATE: 'mag_before_message_update';
-  }
 }
 
 // ============================================================================
@@ -384,33 +325,74 @@ interface ListenerType {
    * @param path - 被更新的变量路径（如 'player.health' 或 'items[0].name'）
    * @param oldValue - 更新前的值
    * @param newValue - 更新后的新值
+   * 触发条件: 当通过 setMvuVariable / _.set 语句更新一个变量之后， 会触发这个事件
+   * 典型用途:
+   *   - 实现变量间的联动逻辑（如等级提升时自动增加属性）
+   *   - 如果某个变量不符合更新条件，则拒绝这次更新。
    */
-  mag_variable_updated: (
+  [Mvu.events.SINGLE_VARIABLE_UPDATED]: (
     stat_data: Record<string, any>,
     path: string,
     oldValue: any,
     newValue: any,
   ) => void;
 
-  /** 变量初始化时触发 */
-  [Mvu.events.VARIABLE_INITIALIZED]: (variables: Mvu.MvuData, swipe_id: number) => void;
-
-  /** 即将用更新后的变量更新楼层时触发 */
-  [Mvu.events.BEFORE_MESSAGE_UPDATE]: (context: Mvu.UpdateContext) => void;
-
-  /** 变量更新开始时触发 */
+  /** 批量变量更新开始时触发的事件
+   * @param variables - 包含 stat_data、display_data、delta_data 的完整数据对象
+   * 触发时机: parseMessage 或 LLM消息回复结束 开始解析命令之前
+   * 典型用途:
+   *   - 保存更新前的状态快照
+   *   - 初始化批处理所需的临时数据结构
+   */
   [Mvu.events.VARIABLE_UPDATE_STARTED]: (variables: Mvu.MvuData) => void;
 
-  /** 命令解析完成时触发 */
+  /** 批量变量更新结束时触发的事件
+   * @param variables - 更新完成后的完整数据对象
+   * 触发时机: parseMessage 或 LLM消息回复结束 完成所有命令的处理后
+   * 典型用途:
+   *   - 对变量的值进行回滚
+   *   - 根据变量的变更更新事件触发、变量取值
+   */
+  [Mvu.events.VARIABLE_UPDATE_ENDED]: (
+    variables: Mvu.MvuData,
+    variables_before_update: Mvu.MvuData,
+  ) => void;
+
+  /**
+   * 在进行 0 层消息初始化时会触发的事件
+   * @param variables - 完成初始化后的完整变量信息，包含 [initvar] 中的信息，以及在 mvu 初始化之前已存在的变量信息
+   * @param swipe_id - 当前正在处理的 swipe 编号
+   * 触发时机: 在进行 0 层的变量初始化时，对每一个开场白(swipe) 都会调用一次
+   * 典型用途:
+   *   - 在初始化时，设置非 stat_data 的变量
+   */
+  [Mvu.events.VARIABLE_INITIALIZED]: (
+    variables: Record<string, any> & Mvu.MvuData,
+    swipe_id: number,
+  ) => void;
+
+  /** 解析完指令后，开始处理之前触发的事件
+   * @param variables - 当前上下文的完整数据
+   * @param commands - 待处理的指令列表
+   * @param message_content - 目前完整的消息内容，可以通过这个参数来收集自己的变量更新范式，将其填入commands
+   * 触发时机: 解析完指令后，开始处理之前
+   * 典型用途:
+   *   - 保护特定变量：扫描 Command 列表中，是否有对特定变量进行修改的，删除它们
+   *   - 兜底错误的llm输入：如 Gemini 在变量里面加横杠了 悠-纪.好感度 可以通过在这个回调里面调整 Path 来修改为正确的
+   *   - 给角色增加别名：如角色 雪莲 有时候 llm 飙繁体 雪蓮，可以通过这个回调，给角色增加若干个别名，保证各种情况都能正确更新变量
+   *   - 实现自定义的变量更新范式解析规则：可以通过对 message_content 的内容进行处理，解析出 JSON Patch 等其他形式的变量更新语句，放入 commands 中
+   */
   [Mvu.events.COMMAND_PARSED]: (
     variables: Mvu.MvuData,
     commands: Mvu.CommandInfo[],
     message_content: string,
   ) => void;
 
-  /** 变量更新结束时触发 */
-  [Mvu.events.VARIABLE_UPDATE_ENDED]: (
-    variables: Mvu.MvuData,
-    variables_before_update: Mvu.MvuData,
-  ) => void;
+  /** 在 MVU 即将对楼层变量进行更新的场合触发的事件
+   * @param context - 当前上下文的完整数据
+   * 触发时机: 完成变量更新操作，即将插入 <StatusPlaceHolderImpl/> 前（仅 assistant 消息会触发，仅发生了变量更新操作时会触发）
+   * 典型用途:
+   *   - 把部分格式化输出暂存在变量中，然后原样输出，如 “剧情总结会存放在变量 stat_data.story_misc 中，之后通过这个接口重新展开为 summary 块，并清空 story_misc 内容”
+   */
+  [Mvu.events.BEFORE_MESSAGE_UPDATE]: (context: Mvu.UpdateContext) => void;
 }
