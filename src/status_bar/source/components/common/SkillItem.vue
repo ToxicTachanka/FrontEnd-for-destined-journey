@@ -121,6 +121,7 @@ const summaryDetails = computed(() => {
 .skill-meta {
   color: var(--theme-text-secondary);
   font-size: 0.95em;
+  white-space: pre-line;
 
   strong {
     color: var(--theme-text-tertiary);

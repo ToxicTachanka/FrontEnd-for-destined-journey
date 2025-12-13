@@ -74,6 +74,7 @@ const summaryDetails = computed(() => `进行中: ${taskCount.value}个`);
 .task-field {
   margin: 0;
   line-height: 1.6;
+  white-space: pre-line;
 }
 
 .field-label {

@@ -242,6 +242,7 @@ const summaryDetails = computed(() => {
   color: var(--theme-text-muted);
   margin-left: 20px;
   display: block; /* 确保换行 */
+  white-space: pre-line;
 }
 
 /* 空状态提示 */

@@ -579,6 +579,7 @@ const destinyFields = computed(() => [
   .value-main {
     color: var(--theme-text-primary);
     word-break: break-word;
+    white-space: pre-line;
   }
 
   /* 根据字符数判断是否需要换行 */
@@ -822,6 +823,7 @@ const destinyFields = computed(() => [
     font-style: italic;
     display: block;
     margin-left: 1.5em;
+    white-space: pre-line;
   }
 }
 
