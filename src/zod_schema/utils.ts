@@ -85,15 +85,27 @@ export const DivineRealmSchema = z.object({
   描述: z.string().prefault(''),
 });
 
+/** 截取 record 的前 n 个条目 */
+const sliceRecord = <T>(record: Record<string, T>, limit: number): Record<string, T> =>
+  Object.fromEntries(Object.entries(record).slice(0, limit));
+
 // 登神长阶 schema
-export const AscensionSchema = z.object({
-  是否开启: coercedBoolean(false),
-  要素: z.record(z.string(), z.string()).prefault({}),
-  权能: z.record(z.string(), z.string()).prefault({}),
-  法则: z.record(z.string(), z.string()).prefault({}),
-  神位: z.string().prefault(''),
-  神国: DivineRealmSchema.prefault({}),
-});
+// 要素限3个，权能限1个，法则限1个，神位不为空时，法则无上限
+export const AscensionSchema = z
+  .object({
+    是否开启: coercedBoolean(false),
+    要素: z.record(z.string(), z.string()).prefault({}),
+    权能: z.record(z.string(), z.string()).prefault({}),
+    法则: z.record(z.string(), z.string()).prefault({}),
+    神位: z.string().prefault(''),
+    神国: DivineRealmSchema.prefault({}),
+  })
+  .transform(data => ({
+    ...data,
+    要素: sliceRecord(data.要素, 3),
+    权能: sliceRecord(data.权能, 1),
+    法则: data.神位 ? data.法则 : sliceRecord(data.法则, 1),
+  }));
 
 // 任务 schema
 export const QuestSchema = z.object({
