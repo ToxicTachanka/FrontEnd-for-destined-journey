@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import FormTextarea from '../../../components/Form/FormTextarea.vue';
+import { parseMacroDeep } from '../../../composables/use-macro';
 import { useCustomContentStore } from '../../../store/customContent';
 import type { Background } from '../../../types';
 import RequirementBadge from './RequirementBadge.vue';
@@ -102,16 +103,26 @@ const handleCustomDescriptionUpdate = (value: string) => {
 };
 
 // 检查是否为自定义开局
-const isCustomBackground = (item: Background) => {
-  return item.name === '【自定义开局】';
-};
+const isCustomBackground = (item: Background) => item.name === '【自定义开局】';
+
+// 解析后的背景数据
+const parsedItems = ref<Background[]>([]);
+
+// 解析所有背景
+watch(
+  () => props.items,
+  async items => {
+    parsedItems.value = await Promise.all(items.map(parseMacroDeep));
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
   <div class="background-list">
-    <div v-if="items.length === 0" class="empty-message">该分类暂无初始剧情</div>
+    <div v-if="parsedItems.length === 0" class="empty-message">该分类暂无初始剧情</div>
     <div
-      v-for="item in items"
+      v-for="item in parsedItems"
       :key="item.name"
       class="background-card"
       :class="{

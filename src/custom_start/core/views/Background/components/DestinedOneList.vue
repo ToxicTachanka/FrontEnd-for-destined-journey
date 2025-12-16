@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { parseMacroDeep } from '../../../composables/use-macro';
 import type { DestinedOne } from '../../../types';
 
 interface Props {
@@ -30,17 +31,13 @@ const toggleExpand = (name: string, event: Event) => {
 };
 
 // 检查是否展开
-const isExpanded = (name: string) => {
-  return expandedCards.value.has(name);
-};
+const isExpanded = (name: string) => expandedCards.value.has(name);
 
 // 检查是否已选择
 const isSelected = (item: DestinedOne) => _.some(props.selectedItems, { name: item.name });
 
 // 检查是否可以选择
-const canSelect = (item: DestinedOne) => {
-  return props.availablePoints >= item.cost;
-};
+const canSelect = (item: DestinedOne) => props.availablePoints >= item.cost;
 
 // 处理选择
 const handleToggle = (item: DestinedOne) => {
@@ -50,13 +47,25 @@ const handleToggle = (item: DestinedOne) => {
     emit('select', item);
   }
 };
+
+// 解析后的命定之人数据
+const parsedItems = ref<DestinedOne[]>([]);
+
+// 解析所有命定之人
+watch(
+  () => props.items,
+  async items => {
+    parsedItems.value = await Promise.all(items.map(parseMacroDeep));
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
   <div class="destined-one-list">
-    <div v-if="items.length === 0" class="empty-message">该层级暂无命定之人</div>
+    <div v-if="parsedItems.length === 0" class="empty-message">该分类暂无命定之人</div>
     <div
-      v-for="item in items"
+      v-for="item in parsedItems"
       :key="item.name"
       class="destined-one-card"
       :class="{
