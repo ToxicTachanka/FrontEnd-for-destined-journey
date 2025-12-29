@@ -210,13 +210,12 @@ const ItemsTabContent: FC<WithMvuDataProps> = ({ data }) => {
               {option}
               {option !== ALL_FILTER && (
                 <span className={styles.filterCount}>
-                  {
-                    _.size(
-                      _.pickBy(getCategoryData(activeCategory), item =>
-                        _.get(item, getFilterKey(activeCategory)) === option,
-                      ),
-                    )
-                  }
+                  {_.size(
+                    _.pickBy(
+                      getCategoryData(activeCategory),
+                      item => _.get(item, getFilterKey(activeCategory)) === option,
+                    ),
+                  )}
                 </span>
               )}
             </button>

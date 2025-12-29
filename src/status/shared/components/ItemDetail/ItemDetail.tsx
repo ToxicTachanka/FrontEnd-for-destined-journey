@@ -86,14 +86,12 @@ export const ItemDetail: FC<ItemDetailProps> = ({
         defaultOpen={defaultOpen}
         title={
           <div className={styles.itemTitle}>
-            <span className={`${styles.itemName} ${getQualityClass(data.品质, styles)}`}>{name}</span>
+            <span className={`${styles.itemName} ${getQualityClass(data.品质, styles)}`}>
+              {name}
+            </span>
             {titleSuffix}
             {editEnabled && onDelete && (
-              <button
-                className={styles.deleteButton}
-                onClick={handleDeleteClick}
-                title="删除"
-              >
+              <button className={styles.deleteButton} onClick={handleDeleteClick} title="删除">
                 <i className="fa-solid fa-trash-can" />
               </button>
             )}
@@ -137,38 +135,40 @@ export const ItemDetail: FC<ItemDetailProps> = ({
           )}
 
           {/* 位置（装备专用） - 编辑模式下可编辑 */}
-          {(itemCategory === 'equipment' || itemCategory === 'item') && (data.位置 || (editEnabled && itemCategory === 'equipment')) && (
-            <div className={styles.itemSlot}>
-              <span className={styles.fieldLabel}>位置:</span>
-              {editEnabled && pathPrefix ? (
-                <EditableField
-                  path={`${pathPrefix}.位置`}
-                  value={data.位置 ?? ''}
-                  type="text"
-                  label="位置"
-                />
-              ) : (
-                <span>{data.位置}</span>
-              )}
-            </div>
-          )}
+          {(itemCategory === 'equipment' || itemCategory === 'item') &&
+            (data.位置 || (editEnabled && itemCategory === 'equipment')) && (
+              <div className={styles.itemSlot}>
+                <span className={styles.fieldLabel}>位置:</span>
+                {editEnabled && pathPrefix ? (
+                  <EditableField
+                    path={`${pathPrefix}.位置`}
+                    value={data.位置 ?? ''}
+                    type="text"
+                    label="位置"
+                  />
+                ) : (
+                  <span>{data.位置}</span>
+                )}
+              </div>
+            )}
 
           {/* 消耗（技能专用） - 编辑模式下可编辑 */}
-          {(itemCategory === 'skill' || itemCategory === 'item') && (data.消耗 || (editEnabled && itemCategory === 'skill')) && (
-            <div className={styles.itemCost}>
-              <span className={styles.fieldLabel}>消耗:</span>
-              {editEnabled && pathPrefix ? (
-                <EditableField
-                  path={`${pathPrefix}.消耗`}
-                  value={data.消耗 ?? ''}
-                  type="text"
-                  label="消耗"
-                />
-              ) : (
-                <span>{data.消耗}</span>
-              )}
-            </div>
-          )}
+          {(itemCategory === 'skill' || itemCategory === 'item') &&
+            (data.消耗 || (editEnabled && itemCategory === 'skill')) && (
+              <div className={styles.itemCost}>
+                <span className={styles.fieldLabel}>消耗:</span>
+                {editEnabled && pathPrefix ? (
+                  <EditableField
+                    path={`${pathPrefix}.消耗`}
+                    value={data.消耗 ?? ''}
+                    type="text"
+                    label="消耗"
+                  />
+                ) : (
+                  <span>{data.消耗}</span>
+                )}
+              </div>
+            )}
 
           {/* 数量（背包物品专用） - 编辑模式下可编辑 */}
           {itemCategory === 'item' && (data.数量 !== undefined || editEnabled) && (

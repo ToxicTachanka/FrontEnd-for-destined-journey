@@ -12,13 +12,7 @@ export interface EmptyHintProps {
  * 空状态提示
  * 使用传入的 className 来对齐各页面风格
  */
-export const EmptyHint: FC<EmptyHintProps> = ({
-  className,
-  icon,
-  text,
-  as = 'div',
-  children,
-}) => {
+export const EmptyHint: FC<EmptyHintProps> = ({ className, icon, text, as = 'div', children }) => {
   const Component = as;
 
   return (

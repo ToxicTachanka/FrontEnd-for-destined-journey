@@ -1,6 +1,14 @@
 import { FC, ReactNode, useState } from 'react';
 import { useEditorSettingStore, useMvuDataStore } from '../../core/stores';
-import { Ascension, Card, Collapse, ConfirmModal, EditableField, EmptyHint, ResourceBar } from '../../shared/components';
+import {
+  Ascension,
+  Card,
+  Collapse,
+  ConfirmModal,
+  EditableField,
+  EmptyHint,
+  ResourceBar,
+} from '../../shared/components';
 import { SelectEditorOption } from '../../shared/components/editors';
 import { withMvuData, WithMvuDataProps } from '../../shared/hoc';
 import styles from './StatusTab.module.scss';
@@ -50,7 +58,10 @@ const renderCollapseTitle = (label: string, summary: string): ReactNode => (
 );
 
 interface StatusEffectsProps {
-  effects: Record<string, { 类型?: string; 效果?: string; 层数?: number; 剩余时间?: string; 来源?: string }>;
+  effects: Record<
+    string,
+    { 类型?: string; 效果?: string; 层数?: number; 剩余时间?: string; 来源?: string }
+  >;
   summary: string;
   editEnabled: boolean;
   onDelete: (name: string) => void;
@@ -72,7 +83,10 @@ const StatusEffects: FC<StatusEffectsProps> = ({ effects, summary, editEnabled, 
                   : styles.effectSpecial;
 
             return (
-              <div key={name} className={`${styles.effectItem} ${typeClass} ${editEnabled ? styles.effectItemEdit : ''}`}>
+              <div
+                key={name}
+                className={`${styles.effectItem} ${typeClass} ${editEnabled ? styles.effectItemEdit : ''}`}
+              >
                 {/* 左侧：名称和核心信息 */}
                 <div className={styles.effectInfo}>
                   <div className={styles.effectHeader}>
@@ -152,7 +166,9 @@ const StatusEffects: FC<StatusEffectsProps> = ({ effects, summary, editEnabled, 
                       {_.isNumber(effect.层数) && effect.层数 > 1 && (
                         <span className={styles.effectStack}>x{effect.层数}</span>
                       )}
-                      {effect.剩余时间 && <span className={styles.effectTime}>{effect.剩余时间}</span>}
+                      {effect.剩余时间 && (
+                        <span className={styles.effectTime}>{effect.剩余时间}</span>
+                      )}
                     </>
                   )}
                 </div>
@@ -174,7 +190,11 @@ const StatusTabContent: FC<WithMvuDataProps> = ({ data }) => {
   const player = data.主角;
 
   // 删除确认状态
-  const [deleteTarget, setDeleteTarget] = useState<{ type: string; path: string; name: string } | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{
+    type: string;
+    path: string;
+    name: string;
+  } | null>(null);
 
   /**
    * 格式化基础信息显示值
@@ -224,7 +244,7 @@ const StatusTabContent: FC<WithMvuDataProps> = ({ data }) => {
   /**
    * 渲染资源值（编辑模式下可调整当前值和上限）
    */
-  const renderResourceField = (field: typeof ResourceFields[number]) => {
+  const renderResourceField = (field: (typeof ResourceFields)[number]) => {
     const current = _.get(player, field.currentKey, 0);
     const max = _.get(player, field.maxKey, 0);
 
@@ -275,9 +295,15 @@ const StatusTabContent: FC<WithMvuDataProps> = ({ data }) => {
 
   const ascension = player.登神长阶;
   const ascensionParts = [
-    Object.keys(ascension?.要素 ?? {}).length ? `要素 ${Object.keys(ascension?.要素 ?? {}).length}` : '',
-    Object.keys(ascension?.权能 ?? {}).length ? `权能 ${Object.keys(ascension?.权能 ?? {}).length}` : '',
-    Object.keys(ascension?.法则 ?? {}).length ? `法则 ${Object.keys(ascension?.法则 ?? {}).length}` : '',
+    Object.keys(ascension?.要素 ?? {}).length
+      ? `要素 ${Object.keys(ascension?.要素 ?? {}).length}`
+      : '',
+    Object.keys(ascension?.权能 ?? {}).length
+      ? `权能 ${Object.keys(ascension?.权能 ?? {}).length}`
+      : '',
+    Object.keys(ascension?.法则 ?? {}).length
+      ? `法则 ${Object.keys(ascension?.法则 ?? {}).length}`
+      : '',
     ascension?.神位 ? `神位 ${ascension.神位}` : '',
     ascension?.神国?.名称 ? `神国 ${ascension.神国.名称}` : '',
   ];
@@ -340,7 +366,10 @@ const StatusTabContent: FC<WithMvuDataProps> = ({ data }) => {
       >
         <div className={`${styles.attributes} ${editEnabled ? styles.attributesEdit : ''}`}>
           {_.map(player.属性, (value, key) => (
-            <div key={key} className={`${styles.attributesItem} ${editEnabled ? styles.attributesItemEdit : ''}`}>
+            <div
+              key={key}
+              className={`${styles.attributesItem} ${editEnabled ? styles.attributesItemEdit : ''}`}
+            >
               <span className={styles.attributesLabel}>{key}</span>
               {editEnabled ? (
                 <EditableField
@@ -424,7 +453,10 @@ const StatusTabContent: FC<WithMvuDataProps> = ({ data }) => {
       />
 
       {/* 登神长阶卡片 */}
-      <Collapse title={renderCollapseTitle('登神长阶', ascensionSummary)} className={styles.statusTabCard}>
+      <Collapse
+        title={renderCollapseTitle('登神长阶', ascensionSummary)}
+        className={styles.statusTabCard}
+      >
         <Ascension data={player.登神长阶} editEnabled={editEnabled} pathPrefix="主角.登神长阶" />
       </Collapse>
 

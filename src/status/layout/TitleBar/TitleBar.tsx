@@ -43,11 +43,7 @@ export const TitleBar: FC<TitleBarProps> = ({ onSettingsClick }) => {
         >
           <i className={`fa-solid fa-rotate-right ${loading ? 'fa-spin' : ''}`} />
         </button>
-        <button
-          className={styles.btn}
-          onClick={onSettingsClick}
-          title="设置"
-        >
+        <button className={styles.btn} onClick={onSettingsClick} title="设置">
           <i className="fa-solid fa-gear" />
         </button>
       </div>

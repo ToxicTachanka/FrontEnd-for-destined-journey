@@ -12,7 +12,9 @@ export interface CardProps {
  * 卡片容器组件
  */
 export const Card: FC<CardProps> = ({ title, children, className = '', quality }) => {
-  const qualityClass = quality ? styles[`cardQuality${quality.charAt(0).toUpperCase() + quality.slice(1)}`] : '';
+  const qualityClass = quality
+    ? styles[`cardQuality${quality.charAt(0).toUpperCase() + quality.slice(1)}`]
+    : '';
 
   return (
     <div className={`${styles.card} ${qualityClass} ${className}`}>

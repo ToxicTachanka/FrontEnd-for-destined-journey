@@ -34,10 +34,7 @@ export const ResourceBar: FC<ResourceBarProps> = ({
     <div className={`${styles.resourceBar} ${typeClass}`}>
       <div className={styles.resourceBarLabel}>{label}</div>
       <div className={styles.resourceBarTrack}>
-        <div
-          className={styles.resourceBarFill}
-          style={{ width: `${percentage}%` }}
-        />
+        <div className={styles.resourceBarFill} style={{ width: `${percentage}%` }} />
         {showValues && (
           <div className={styles.resourceBarValues}>
             {current} / {max}

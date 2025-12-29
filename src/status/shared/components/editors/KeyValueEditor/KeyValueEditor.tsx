@@ -95,7 +95,9 @@ export const KeyValueEditor: FC<KeyValueEditorProps> = ({
   const entries = Object.entries(value);
 
   return (
-    <div className={`${styles.keyValueEditor} ${disabled ? styles.disabled : ''} ${className ?? ''}`}>
+    <div
+      className={`${styles.keyValueEditor} ${disabled ? styles.disabled : ''} ${className ?? ''}`}
+    >
       <div className={styles.content}>
         {/* 现有条目 */}
         {entries.length > 0 && (
@@ -181,9 +183,7 @@ export const KeyValueEditor: FC<KeyValueEditorProps> = ({
           </div>
         )}
 
-        {entries.length === 0 && disabled && (
-          <span className={styles.empty}>暂无数据</span>
-        )}
+        {entries.length === 0 && disabled && <span className={styles.empty}>暂无数据</span>}
       </div>
     </div>
   );

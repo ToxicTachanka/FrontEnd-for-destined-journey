@@ -48,17 +48,12 @@ export interface WithMvuDataOptions {
  * ```
  */
 export function withMvuData(options: WithMvuDataOptions = {}) {
-  const {
-    baseClassName = '',
-    renderLoading,
-    renderError,
-    renderEmpty,
-  } = options;
+  const { baseClassName = '', renderLoading, renderError, renderEmpty } = options;
 
   return function <P extends WithMvuDataProps>(
-    WrappedComponent: ComponentType<P>
+    WrappedComponent: ComponentType<P>,
   ): FC<Omit<P, keyof WithMvuDataProps>> {
-    const WithMvuDataComponent: FC<Omit<P, keyof WithMvuDataProps>> = (props) => {
+    const WithMvuDataComponent: FC<Omit<P, keyof WithMvuDataProps>> = props => {
       const { data, loading, error } = useMvuDataStore();
 
       // 生成状态相关的样式类名

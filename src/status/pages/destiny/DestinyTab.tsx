@@ -1,7 +1,16 @@
 import { FC, ReactNode, useState } from 'react';
 import { useEditorSettingStore, useMvuDataStore } from '../../core/stores';
 import { sortEntriesByQuality } from '../../core/utils';
-import { Ascension, Card, Collapse, ConfirmModal, EditableField, EmptyHint, IconTitle, ItemDetail } from '../../shared/components';
+import {
+  Ascension,
+  Card,
+  Collapse,
+  ConfirmModal,
+  EditableField,
+  EmptyHint,
+  IconTitle,
+  ItemDetail,
+} from '../../shared/components';
 import { withMvuData, WithMvuDataProps } from '../../shared/hoc';
 import styles from './DestinyTab.module.scss';
 
@@ -18,7 +27,11 @@ const DestinyTabContent: FC<WithMvuDataProps> = ({ data }) => {
   const partners = destinySystem?.命定之人;
 
   // 删除确认状态
-  const [deleteTarget, setDeleteTarget] = useState<{ type: string; path: string; name: string } | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{
+    type: string;
+    path: string;
+    name: string;
+  } | null>(null);
 
   /**
    * 渲染可编辑字段行
@@ -55,7 +68,10 @@ const DestinyTabContent: FC<WithMvuDataProps> = ({ data }) => {
         {editEnabled ? (
           <EditableField
             path={path}
-            value={value ?? (type === 'number' ? 0 : type === 'toggle' ? false : type === 'tags' ? [] : '')}
+            value={
+              value ??
+              (type === 'number' ? 0 : type === 'toggle' ? false : type === 'tags' ? [] : '')
+            }
             type={type}
             label={label}
             {...config}
@@ -233,26 +249,94 @@ const DestinyTabContent: FC<WithMvuDataProps> = ({ data }) => {
 
               {/* 基础信息 */}
               <div className={styles.partnerInfo}>
-                {renderEditableRow('种族', `命定系统.命定之人.${name}.种族`, partner.种族, 'text', styles.infoRow, styles.infoLabel, styles.infoValue)}
-                {renderEditableRow('身份', `命定系统.命定之人.${name}.身份`, partner.身份, 'tags', styles.infoRow, styles.infoLabel, styles.infoValue)}
-                {renderEditableRow('职业', `命定系统.命定之人.${name}.职业`, partner.职业, 'tags', styles.infoRow, styles.infoLabel, styles.infoValue)}
-                {renderReadonlyRow('生命层级', partner.生命层级, styles.infoRow, styles.infoLabel, styles.infoValue)}
-                {renderReadonlyRow('等级', partner.等级 ? `Lv.${partner.等级}` : '', styles.infoRow, styles.infoLabel, styles.infoValue)}
+                {renderEditableRow(
+                  '种族',
+                  `命定系统.命定之人.${name}.种族`,
+                  partner.种族,
+                  'text',
+                  styles.infoRow,
+                  styles.infoLabel,
+                  styles.infoValue,
+                )}
+                {renderEditableRow(
+                  '身份',
+                  `命定系统.命定之人.${name}.身份`,
+                  partner.身份,
+                  'tags',
+                  styles.infoRow,
+                  styles.infoLabel,
+                  styles.infoValue,
+                )}
+                {renderEditableRow(
+                  '职业',
+                  `命定系统.命定之人.${name}.职业`,
+                  partner.职业,
+                  'tags',
+                  styles.infoRow,
+                  styles.infoLabel,
+                  styles.infoValue,
+                )}
+                {renderReadonlyRow(
+                  '生命层级',
+                  partner.生命层级,
+                  styles.infoRow,
+                  styles.infoLabel,
+                  styles.infoValue,
+                )}
+                {renderReadonlyRow(
+                  '等级',
+                  partner.等级 ? `Lv.${partner.等级}` : '',
+                  styles.infoRow,
+                  styles.infoLabel,
+                  styles.infoValue,
+                )}
               </div>
 
               {/* 外貌与着装 */}
               {(partner.外貌 || partner.着装 || editEnabled) && (
                 <div className={styles.partnerAppearance}>
-                  {renderEditableRow('外貌', `命定系统.命定之人.${name}.外貌`, partner.外貌, 'textarea', styles.appearanceRow, styles.appearanceLabel, styles.appearanceValue)}
-                  {renderEditableRow('着装', `命定系统.命定之人.${name}.着装`, partner.着装, 'textarea', styles.appearanceRow, styles.appearanceLabel, styles.appearanceValue)}
+                  {renderEditableRow(
+                    '外貌',
+                    `命定系统.命定之人.${name}.外貌`,
+                    partner.外貌,
+                    'textarea',
+                    styles.appearanceRow,
+                    styles.appearanceLabel,
+                    styles.appearanceValue,
+                  )}
+                  {renderEditableRow(
+                    '着装',
+                    `命定系统.命定之人.${name}.着装`,
+                    partner.着装,
+                    'textarea',
+                    styles.appearanceRow,
+                    styles.appearanceLabel,
+                    styles.appearanceValue,
+                  )}
                 </div>
               )}
 
               {/* 性格特征 */}
               {(partner.性格 || partner.喜爱 || editEnabled) && (
                 <div className={styles.partnerTraits}>
-                  {renderEditableRow('性格', `命定系统.命定之人.${name}.性格`, partner.性格, 'textarea', styles.traitRow, styles.traitLabel, styles.traitValue)}
-                  {renderEditableRow('喜爱', `命定系统.命定之人.${name}.喜爱`, partner.喜爱, 'textarea', styles.traitRow, styles.traitLabel, styles.traitValue)}
+                  {renderEditableRow(
+                    '性格',
+                    `命定系统.命定之人.${name}.性格`,
+                    partner.性格,
+                    'textarea',
+                    styles.traitRow,
+                    styles.traitLabel,
+                    styles.traitValue,
+                  )}
+                  {renderEditableRow(
+                    '喜爱',
+                    `命定系统.命定之人.${name}.喜爱`,
+                    partner.喜爱,
+                    'textarea',
+                    styles.traitRow,
+                    styles.traitLabel,
+                    styles.traitValue,
+                  )}
                 </div>
               )}
 
@@ -260,9 +344,14 @@ const DestinyTabContent: FC<WithMvuDataProps> = ({ data }) => {
               {!_.isEmpty(partner.属性) && (
                 <div className={styles.partnerAttributes}>
                   <div className={styles.sectionLabel}>属性</div>
-                  <div className={`${styles.attributeGrid} ${editEnabled ? styles.attributeGridEdit : ''}`}>
+                  <div
+                    className={`${styles.attributeGrid} ${editEnabled ? styles.attributeGridEdit : ''}`}
+                  >
                     {_.map(partner.属性, (value, key) => (
-                      <div key={key} className={`${styles.attributeItem} ${editEnabled ? styles.attributeItemEdit : ''}`}>
+                      <div
+                        key={key}
+                        className={`${styles.attributeItem} ${editEnabled ? styles.attributeItemEdit : ''}`}
+                      >
                         <span className={styles.attributeKey}>{key}</span>
                         {editEnabled ? (
                           <EditableField
@@ -286,7 +375,8 @@ const DestinyTabContent: FC<WithMvuDataProps> = ({ data }) => {
                 '装备',
                 partner.装备,
                 styles.equipmentList,
-                item => (item.位置 ? <span className={styles.equipmentSlot}>[{item.位置}]</span> : null),
+                item =>
+                  item.位置 ? <span className={styles.equipmentSlot}>[{item.位置}]</span> : null,
                 name,
               )}
 

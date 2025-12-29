@@ -14,10 +14,7 @@ const QuestsTabContent: FC<WithMvuDataProps> = ({ data }) => {
 
   /** 渲染单个任务 */
   const renderQuest = (name: string, quest: Task) => (
-    <Collapse
-      key={name}
-      title={<IconTitle text={name} className={styles.questTitle} />}
-    >
+    <Collapse key={name} title={<IconTitle text={name} className={styles.questTitle} />}>
       <div className={styles.questContent}>
         {/* 简介 */}
         {quest.简介 && (
@@ -51,7 +48,12 @@ const QuestsTabContent: FC<WithMvuDataProps> = ({ data }) => {
       {/* 任务统计 */}
       <Card className={styles.statsCard}>
         <div className={styles.stats}>
-          <IconTitle icon="fa-solid fa-list-check" text="进行中" className={styles.statsLabel} as="span" />
+          <IconTitle
+            icon="fa-solid fa-list-check"
+            text="进行中"
+            className={styles.statsLabel}
+            as="span"
+          />
           <span className={styles.statsValue}>{questEntries.length}</span>
         </div>
       </Card>

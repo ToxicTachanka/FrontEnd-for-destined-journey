@@ -99,8 +99,9 @@ export const TagEditor: FC<TagEditorProps> = ({
             )}
           </span>
         ))}
-        {!disabled && canAddMore && (
-          isEditing ? (
+        {!disabled &&
+          canAddMore &&
+          (isEditing ? (
             <input
               ref={inputRef}
               type="text"
@@ -115,8 +116,7 @@ export const TagEditor: FC<TagEditorProps> = ({
             <button className={styles.addBtn} onClick={handleStartEdit} title="添加标签">
               <i className="fa-solid fa-plus" />
             </button>
-          )
-        )}
+          ))}
       </div>
     </div>
   );

@@ -36,7 +36,13 @@ export const Ascension: FC<AscensionProps> = ({
   }
 
   /** 渲染阶段区块（要素/权能/法则） */
-  const renderSection = ({ data: sectionData, title, icon, itemClass, sectionKey }: SectionConfig & { sectionKey: string }) => {
+  const renderSection = ({
+    data: sectionData,
+    title,
+    icon,
+    itemClass,
+    sectionKey,
+  }: SectionConfig & { sectionKey: string }) => {
     // 如果数据为空则不显示（包括被 schema 过滤的情况）
     if (_.isEmpty(sectionData)) return null;
 

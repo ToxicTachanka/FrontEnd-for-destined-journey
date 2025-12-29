@@ -29,7 +29,9 @@ export const RecordListEditor: FC<RecordListEditorProps> = ({
   const entries = Object.entries(value ?? {});
 
   return (
-    <div className={`${styles.recordListEditor} ${disabled ? styles.disabled : ''} ${className ?? ''}`}>
+    <div
+      className={`${styles.recordListEditor} ${disabled ? styles.disabled : ''} ${className ?? ''}`}
+    >
       <div className={styles.list}>
         {entries.length === 0 ? (
           <EmptyHint className={styles.empty} text={emptyText} />

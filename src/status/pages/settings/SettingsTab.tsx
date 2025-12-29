@@ -110,7 +110,7 @@ export const SettingsTab: FC = () => {
                     <input
                       type="color"
                       className={styles.colorItemInput}
-                      value={colors[colorKey as keyof typeof colors] as string || '#000000'}
+                      value={(colors[colorKey as keyof typeof colors] as string) || '#000000'}
                       onChange={e => handleColorChange(colorKey, e.target.value)}
                     />
                   </div>
