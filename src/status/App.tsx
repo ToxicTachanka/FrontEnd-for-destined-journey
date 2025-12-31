@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { DefaultTabId, TabsConfig } from './config/tabs.config';
-import { useEditorSettingStore } from './core/stores';
+import { useEditorSettingStore, useThemeStore } from './core/stores';
 import { ContentArea, TabBar, TitleBar, Window } from './layout';
 import { DestinyTab, ItemsTab, NewsTab, QuestsTab, SettingsTab, StatusTab } from './pages';
 
@@ -9,9 +9,12 @@ const App: FC = () => {
   const [showSettings, setShowSettings] = useState(false);
 
   const { loadSettings } = useEditorSettingStore();
+  const { loadTheme } = useThemeStore();
+
   useEffect(() => {
     loadSettings();
-  }, [loadSettings]);
+    loadTheme();
+  }, [loadSettings, loadTheme]);
 
   /**
    * 渲染当前 Tab 内容
