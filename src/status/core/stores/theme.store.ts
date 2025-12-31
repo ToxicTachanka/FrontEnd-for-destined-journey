@@ -1,13 +1,11 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { DefaultTheme } from '../hooks';
-import type { Theme, ThemeColors } from '../types';
+import { DefaultTheme, ThemePresets } from '../../config/theme-presets';
+import type { Theme, ThemeColors, ThemePresetId } from '../types';
 
 interface ThemeState {
-  /** 当前主题 */
-  currentTheme: Theme;
-  /** 用户自定义颜色（覆盖默认） */
-  userColors: Partial<ThemeColors> | null;
+  /** 当前选中的主题ID */
+  currentThemeId: ThemePresetId;
   /** 是否已加载 */
   loaded: boolean;
 }
@@ -17,16 +15,16 @@ interface ThemeActions {
   loadTheme: () => void;
   /** 保存主题到酒馆变量 */
   saveTheme: () => Promise<void>;
-  /** 更新单个颜色 */
-  updateColor: (key: keyof ThemeColors, value: string) => void;
-  /** 更新多个颜色 */
-  updateColors: (colors: Partial<ThemeColors>) => void;
+  /** 切换主题 */
+  setTheme: (themeId: ThemePresetId) => void;
   /** 重置为默认主题 */
   reset: () => Promise<void>;
   /** 应用 CSS 变量到 DOM */
   applyCssVariables: () => void;
-  /** 获取有效颜色（合并用户自定义和默认） */
-  getEffectiveColors: () => ThemeColors;
+  /** 获取当前主题 */
+  getCurrentTheme: () => Theme;
+  /** 获取当前主题颜色 */
+  getColors: () => ThemeColors;
 }
 
 type ThemeStore = ThemeState & ThemeActions;
@@ -34,8 +32,7 @@ type ThemeStore = ThemeState & ThemeActions;
 export const useThemeStore = create<ThemeStore>()(
   immer((set, get) => ({
     // State
-    currentTheme: DefaultTheme,
-    userColors: null,
+    currentThemeId: 'parchment',
     loaded: false,
 
     // Actions
@@ -43,11 +40,11 @@ export const useThemeStore = create<ThemeStore>()(
     loadTheme: () => {
       try {
         const variables = getVariables({ type: 'character' });
-        const themeData = _.get(variables, 'status_theme', null);
+        const savedThemeId = _.get(variables, 'status_theme_id', null) as ThemePresetId | null;
 
-        if (themeData && typeof themeData === 'object') {
+        if (savedThemeId && ThemePresets[savedThemeId]) {
           set(state => {
-            state.userColors = themeData as Partial<ThemeColors>;
+            state.currentThemeId = savedThemeId;
           });
         }
 
@@ -68,7 +65,7 @@ export const useThemeStore = create<ThemeStore>()(
     saveTheme: async () => {
       try {
         await insertOrAssignVariables(
-          { status_theme: get().userColors || {} },
+          { status_theme_id: get().currentThemeId },
           { type: 'character' },
         );
       } catch (error) {
@@ -76,33 +73,26 @@ export const useThemeStore = create<ThemeStore>()(
       }
     },
 
-    updateColor: (key, value) => {
-      set(state => {
-        if (!state.userColors) {
-          state.userColors = {};
-        }
-        state.userColors[key] = value;
-      });
-      get().applyCssVariables();
-    },
+    setTheme: themeId => {
+      if (!ThemePresets[themeId]) {
+        console.warn(`[StatusBar] 未知主题ID: ${themeId}`);
+        return;
+      }
 
-    updateColors: colors => {
       set(state => {
-        if (!state.userColors) {
-          state.userColors = {};
-        }
-        Object.assign(state.userColors, colors);
+        state.currentThemeId = themeId;
       });
+
       get().applyCssVariables();
     },
 
     reset: async () => {
       set(state => {
-        state.userColors = null;
+        state.currentThemeId = 'parchment';
       });
 
       try {
-        await deleteVariable('status_theme', { type: 'character' });
+        await deleteVariable('status_theme_id', { type: 'character' });
       } catch (error) {
         console.error('[StatusBar] 重置主题失败:', error);
       }
@@ -110,14 +100,17 @@ export const useThemeStore = create<ThemeStore>()(
       get().applyCssVariables();
     },
 
-    getEffectiveColors: () => {
-      const { currentTheme, userColors } = get();
-      if (!userColors) return currentTheme.colors;
-      return { ...currentTheme.colors, ...userColors };
+    getCurrentTheme: () => {
+      const { currentThemeId } = get();
+      return ThemePresets[currentThemeId] || DefaultTheme;
+    },
+
+    getColors: () => {
+      return get().getCurrentTheme().colors;
     },
 
     applyCssVariables: () => {
-      const colors = get().getEffectiveColors();
+      const colors = get().getColors();
       const root = document.documentElement;
 
       Object.entries(colors).forEach(([key, value]) => {

@@ -109,15 +109,15 @@
 }
 
 .currencyItemGold {
-  color: #ffd700;
+  color: var(--theme-currency-gold);
 }
 
 .currencyItemSilver {
-  color: #c0c0c0;
+  color: var(--theme-currency-silver);
 }
 
 .currencyItemCopper {
-  color: #b87333;
+  color: var(--theme-currency-copper);
 }
 
 // 类别按钮

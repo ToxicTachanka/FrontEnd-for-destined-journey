@@ -7,7 +7,6 @@
   // 窗口容器
   --theme-window-bg: #1a1410;
   --theme-window-border: #5a3f2b;
-  --theme-window-shadow: 0 12px 28px rgba(10, 6, 4, 0.55);
 
   // 标题栏
   --theme-title-bar-bg: #2b2018;
@@ -52,6 +51,25 @@
   --theme-success: #4e9a62;
   --theme-warning: #d9a441;
   --theme-error: #c4493d;
+
+  // 命定系统
+  --theme-affection: #b54a5f;
+  --theme-affection-bg: rgba(181, 74, 95, 0.25);
+  --theme-affection-text: #d58d9d;
+  --theme-tag-present: rgba(76, 175, 80, 0.18);
+  --theme-tag-present-text: #7ac28c;
+  --theme-tag-contract: rgba(233, 30, 99, 0.18);
+  --theme-tag-contract-text: #e08aa6;
+
+  // 登神长阶
+  --theme-ascension-element: rgba(33, 150, 243, 0.12);
+  --theme-ascension-power: rgba(255, 152, 0, 0.12);
+  --theme-ascension-law: rgba(156, 39, 176, 0.12);
+
+  // 货币
+  --theme-currency-gold: #ffd700;
+  --theme-currency-silver: #c0c0c0;
+  --theme-currency-copper: #b87333;
 }
 
 * {

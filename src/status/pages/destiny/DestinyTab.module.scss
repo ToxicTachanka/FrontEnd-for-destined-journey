@@ -121,13 +121,13 @@
 }
 
 .tagPresent {
-  background: rgba(76, 175, 80, 0.18);
-  color: #7ac28c;
+  background: var(--theme-tag-present);
+  color: var(--theme-tag-present-text);
 }
 
 .tagContract {
-  background: rgba(233, 30, 99, 0.18);
-  color: #e08aa6;
+  background: var(--theme-tag-contract);
+  color: var(--theme-tag-contract-text);
 }
 
 // 命定之人详情
@@ -165,7 +165,7 @@
 
 .affectionBarFill {
   height: 100%;
-  background: #b54a5f;
+  background: var(--theme-affection);
   border-radius: 4px;
   transition: width $transition-normal;
 }
@@ -175,16 +175,16 @@
   width: 30px;
   text-align: right;
   font-weight: 600;
-  color: #d58d9d;
+  color: var(--theme-affection-text);
 }
 
 .isNegative {
   &.affectionBarFill {
-    background: #9c3a3a;
+    background: var(--theme-error);
   }
 
   &.affectionBarValue {
-    color: #d68f8f;
+    color: var(--theme-error);
   }
 }
 
@@ -504,9 +504,9 @@
 
   &:hover {
     opacity: 1;
-    color: #c04040;
-    background: rgba(192, 64, 64, 0.12);
-    border-color: rgba(192, 64, 64, 0.25);
+    color: var(--theme-error);
+    background: rgba(196, 73, 61, 0.12);
+    border-color: rgba(196, 73, 61, 0.25);
   }
 
   i {

@@ -10,8 +10,6 @@ export interface ThemeColors {
   windowBg: string;
   /** 窗口边框色 */
   windowBorder: string;
-  /** 窗口阴影 */
-  windowShadow: string;
 
   // 标题栏
   /** 标题栏背景色 */
@@ -86,13 +84,57 @@ export interface ThemeColors {
   warning: string;
   /** 错误状态 */
   error: string;
+
+  // 命定系统专用
+  /** 好感度条颜色 */
+  affection: string;
+  /** 好感度条背景 */
+  affectionBg: string;
+  /** 好感度文本 */
+  affectionText: string;
+  /** 在场标签背景 */
+  tagPresent: string;
+  /** 在场标签文本 */
+  tagPresentText: string;
+  /** 契约标签背景 */
+  tagContract: string;
+  /** 契约标签文本 */
+  tagContractText: string;
+
+  // 登神长阶颜色
+  /** 要素颜色 */
+  ascensionElement: string;
+  /** 权能颜色 */
+  ascensionPower: string;
+  /** 法则颜色 */
+  ascensionLaw: string;
+
+  // 货币颜色
+  /** 金币颜色 */
+  currencyGold: string;
+  /** 银币颜色 */
+  currencySilver: string;
+  /** 铜币颜色 */
+  currencyCopper: string;
 }
+
+/**
+ * 预设主题ID
+ */
+export type ThemePresetId =
+  | 'parchment' // 西幻羊皮纸（默认）
+  | 'crimson' // 暗酒红
+  | 'indigo' // 深靛蓝
+  | 'bronze' // 古铜金
+  | 'sakura' // 粉紫色
+  | 'obsidian' // 墨黑
+  | 'ivory'; // 羊皮纸米黄
 
 /**
  * 主题配置
  */
 export interface Theme {
-  id: string;
+  id: ThemePresetId;
   name: string;
   colors: ThemeColors;
 }

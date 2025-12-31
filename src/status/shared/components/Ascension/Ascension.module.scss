@@ -89,17 +89,17 @@
 }
 
 .itemElement {
-  background: rgba(33, 150, 243, 0.08);
+  background: var(--theme-ascension-element);
   color: var(--theme-text-primary);
 }
 
 .itemPower {
-  background: rgba(255, 152, 0, 0.08);
+  background: var(--theme-ascension-power);
   color: var(--theme-text-primary);
 }
 
 .itemLaw {
-  background: rgba(156, 39, 176, 0.08);
+  background: var(--theme-ascension-law);
   color: var(--theme-text-primary);
 }
 
