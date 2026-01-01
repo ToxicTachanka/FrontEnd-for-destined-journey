@@ -46,7 +46,9 @@ export const Collapse: FC<CollapseProps> = ({
         <i className={`${styles.collapseIcon} fa-solid fa-chevron-down`} />
       </div>
       <div className={styles.collapseContent}>
-        <div className={styles.collapseBody}>{children}</div>
+        <div className={styles.collapseInner}>
+          <div className={styles.collapseBody}>{children}</div>
+        </div>
       </div>
     </div>
   );

@@ -45,7 +45,14 @@
 }
 
 .collapseContent {
-  display: none;
+  // 使用 CSS Grid 实现平滑高度动画
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows $transition-normal;
+}
+
+.collapseInner {
+  overflow: hidden;
 }
 
 .collapseBody {
@@ -60,7 +67,7 @@
   }
 
   > .collapseContent {
-    display: block;
+    grid-template-rows: 1fr;
   }
 }
 

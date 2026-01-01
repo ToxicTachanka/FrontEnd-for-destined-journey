@@ -532,7 +532,7 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
       if (argv.mode !== 'production' && ['vue', 'pixi'].some(key => request.includes(key))) {
         return callback();
       }
-      if (['react', 'zustand'].some(key => request.includes(key))) {
+      if (['react', 'zustand', 'gsap'].some(key => request.includes(key))) {
         return callback();
       }
       const global = {
