@@ -127,7 +127,7 @@ watch(
             <div class="block-content">{{ item.app }}</div>
           </div>
           <div class="info-block">
-            <div class="block-title">服饰</div>
+            <div class="block-title">着装</div>
             <div class="block-content">{{ item.cloth }}</div>
           </div>
         </div>

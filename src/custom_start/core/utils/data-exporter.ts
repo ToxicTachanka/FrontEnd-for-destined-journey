@@ -266,7 +266,7 @@ export function generateAIPrompt(
       lines.push(`  性格: ${one.personality}`);
       lines.push(`  喜爱: ${one.like}`);
       lines.push(`  外貌: ${one.app}`);
-      lines.push(`  衣着: ${one.cloth}`);
+      lines.push(`  着装: ${one.cloth}`);
       lines.push(`  属性:`);
       lines.push(`    力量: ${one.attributes.strength}`);
       lines.push(`    敏捷: ${one.attributes.dexterity}`);
