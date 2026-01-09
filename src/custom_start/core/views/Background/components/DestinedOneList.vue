@@ -206,30 +206,48 @@ watch(
           <div class="block-title">登神长阶</div>
           <div class="stairway-content">
             <div v-if="item.stairway.elements" class="stairway-section">
-              <div class="stairway-label">元素：</div>
-              <div v-for="(value, key) in item.stairway.elements" :key="key" class="stairway-item">
-                {{ key }}：{{ value }}
+              <div class="stairway-label">要素：</div>
+              <div
+                v-for="(effects, name) in item.stairway.elements"
+                :key="name"
+                class="stairway-item"
+              >
+                <div>• {{ name }}</div>
+                <div v-for="(value, key) in effects" :key="key">{{ key }}：{{ value }}</div>
               </div>
             </div>
             <div v-if="item.stairway.powers" class="stairway-section">
               <div class="stairway-label">权能：</div>
-              <div v-for="(value, key) in item.stairway.powers" :key="key" class="stairway-item">
-                {{ key }}：{{ value }}
+              <div
+                v-for="(effects, name) in item.stairway.powers"
+                :key="name"
+                class="stairway-item"
+              >
+                <div>• {{ name }}</div>
+                <div v-for="(value, key) in effects" :key="key">{{ key }}：{{ value }}</div>
               </div>
             </div>
             <div v-if="item.stairway.laws" class="stairway-section">
               <div class="stairway-label">法则：</div>
-              <div v-for="(value, key) in item.stairway.laws" :key="key" class="stairway-item">
-                {{ key }}：{{ value }}
+              <div v-for="(effects, name) in item.stairway.laws" :key="name" class="stairway-item">
+                <div>• {{ name }}</div>
+                <div v-for="(value, key) in effects" :key="key">{{ key }}：{{ value }}</div>
               </div>
             </div>
             <div v-if="item.stairway.godlyRank" class="stairway-item">
               神位：{{ item.stairway.godlyRank }}
             </div>
-            <div v-if="item.stairway.godKingdom" class="stairway-section">
+            <div
+              v-if="item.stairway.godKingdom?.name || item.stairway.godKingdom?.description"
+              class="stairway-section"
+            >
               <div class="stairway-label">神国：</div>
-              <div class="stairway-item">{{ item.stairway.godKingdom.name }}</div>
-              <div class="stairway-desc">{{ item.stairway.godKingdom.description }}</div>
+              <div v-if="item.stairway.godKingdom?.name" class="stairway-item">
+                {{ item.stairway.godKingdom?.name }}
+              </div>
+              <div v-if="item.stairway.godKingdom?.description" class="stairway-desc">
+                {{ item.stairway.godKingdom?.description }}
+              </div>
             </div>
           </div>
         </div>

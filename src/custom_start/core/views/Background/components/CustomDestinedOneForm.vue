@@ -178,9 +178,14 @@ const cancelAdd = () => {
 };
 
 // 解析登神长阶
-const parseStairway = (str: string) => {
+const parseStairway = (str: string): DestinedOne['stairway'] => {
   if (!str.trim()) return { isOpen: false };
-  return { isOpen: true, elements: { 描述: str } };
+  return {
+    isOpen: true,
+    elements: {
+      custom: { desc: str },
+    },
+  };
 };
 
 // 添加自定义命定之人（确认后执行）

@@ -298,7 +298,14 @@ export function generateAIPrompt(
       }
       if (one.stairway.isOpen) {
         lines.push(`  登神长阶: 已开启`);
-        if (one.stairway.elements?.描述) lines.push(`    描述: ${one.stairway.elements.描述}`);
+        const stairwayDesc =
+          _.get(one.stairway, 'elements.custom.desc') ||
+          _.chain(one.stairway.elements)
+            .values()
+            .map(value => value?.desc || '')
+            .find(Boolean)
+            .value();
+        if (stairwayDesc) lines.push(`    描述: ${stairwayDesc}`);
       }
       if (one.comment) lines.push(`  心里话: ${one.comment}`);
       if (one.backgroundInfo) lines.push(`  背景: ${one.backgroundInfo}`);
@@ -328,7 +335,6 @@ export function generateAIPrompt(
   if (background) {
     lines.push('');
     lines.push('【初始开局剧情】');
-    lines.push(`${background.name}`);
     // 自定义开局使用用户输入的描述，否则使用预设描述
     const description =
       background.name === '【自定义开局】' && customBackgroundDescription
@@ -340,8 +346,7 @@ export function generateAIPrompt(
   const content = lines.join('\n');
   const instructions = `---
 根据<status_current_variables>和以上内容，生成一个符合描述和情景的初始剧情！
-（注意：生成初始剧情时，先检查上述内容是否完整，如不完整，必须参考相关设定进行完善，然后再根据内容，在<UpdateVariable>内更新数据。除非有特殊要求，更新的数据不要有任何修改和省略。）
-（IMPORTANT: 已在<status_current_variables>内的数据，不得修改和删除）`;
+（注意：生成初始剧情时，先检查上述内容是否完整，如不完整，必须参考相关设定进行完善。）`;
 
   return `\`\`\`text\n${content}\n\`\`\`\n\n${instructions}`;
 }

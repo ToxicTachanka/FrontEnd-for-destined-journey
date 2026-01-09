@@ -48,15 +48,9 @@ export interface DestinedOne {
   };
   stairway: {
     isOpen: boolean;
-    elements?: {
-      [key: string]: string;
-    };
-    powers?: {
-      [key: string]: string;
-    };
-    laws?: {
-      [key: string]: string;
-    };
+    elements?: Record<string, Record<string, string>>; // 嵌套键值对：{ "要素名": { "效果名": "效果描述" } }
+    powers?: Record<string, Record<string, string>>; // 嵌套键值对：{ "权能名": { "效果名": "效果描述" } }
+    laws?: Record<string, Record<string, string>>; // 嵌套键值对：{ "法则名": { "效果名": "效果描述" } }
     godlyRank?: string;
     godKingdom?: {
       name: string;

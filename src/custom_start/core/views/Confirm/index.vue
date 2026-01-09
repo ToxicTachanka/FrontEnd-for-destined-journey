@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useCharacterStore, useCustomContentStore } from '../../store';
+import type { DestinedOne } from '../../types';
 
 const characterStore = useCharacterStore();
 const customContentStore = useCustomContentStore();
@@ -50,6 +51,45 @@ const rarityColorMap: Record<string, string> = {
   legendary: '#ff9800',
   mythic: '#e91e63',
   only: '#ff0000',
+};
+
+const formatStairwayMap = (map?: Record<string, Record<string, string>>) => {
+  return Object.entries(map || {}).map(([name, effects]) => ({
+    name,
+    effects: Object.entries(effects || {}).map(([key, value]) => ({ key, value })),
+  }));
+};
+
+const getStairwayView = (one: DestinedOne) => {
+  const stairway = one.stairway;
+  if (!stairway?.isOpen) {
+    return {
+      isOpen: false,
+      isSimple: false,
+      text: '',
+      elements: [],
+      powers: [],
+      laws: [],
+      godlyRank: '',
+      godKingdom: undefined,
+    };
+  }
+
+  const elements = formatStairwayMap(stairway.elements);
+  const powers = formatStairwayMap(stairway.powers);
+  const laws = formatStairwayMap(stairway.laws);
+  const isSimple = one.isCustom;
+
+  return {
+    isOpen: true,
+    isSimple,
+    text: isSimple ? stairway.elements?.custom?.desc || '' : '',
+    elements,
+    powers,
+    laws,
+    godlyRank: stairway.godlyRank || '',
+    godKingdom: stairway.godKingdom,
+  };
 };
 </script>
 
@@ -258,6 +298,83 @@ const rarityColorMap: Record<string, string> = {
                 {{ one.lifeLevel }}
               </p>
               <p v-if="one.backgroundInfo">{{ one.backgroundInfo }}</p>
+              <div v-if="getStairwayView(one).isOpen" class="sub-list">
+                <p><strong>登神长阶：</strong></p>
+                <p v-if="getStairwayView(one).isSimple" class="sub-item">
+                  • {{ getStairwayView(one).text }}
+                </p>
+                <template v-else>
+                  <div v-if="getStairwayView(one).elements.length > 0" class="sub-item">
+                    <p><strong>要素：</strong></p>
+                    <div
+                      v-for="element in getStairwayView(one).elements"
+                      :key="`element-${element.name}`"
+                      class="sub-item"
+                    >
+                      <p class="sub-item">• {{ element.name }}</p>
+                      <p
+                        v-for="effect in element.effects"
+                        :key="`element-${element.name}-${effect.key}`"
+                        class="sub-item"
+                      >
+                        • {{ effect.key }}：{{ effect.value }}
+                      </p>
+                    </div>
+                  </div>
+                  <div v-if="getStairwayView(one).powers.length > 0" class="sub-item">
+                    <p><strong>权能：</strong></p>
+                    <div
+                      v-for="power in getStairwayView(one).powers"
+                      :key="`power-${power.name}`"
+                      class="sub-item"
+                    >
+                      <p class="sub-item">• {{ power.name }}</p>
+                      <p
+                        v-for="effect in power.effects"
+                        :key="`power-${power.name}-${effect.key}`"
+                        class="sub-item"
+                      >
+                        • {{ effect.key }}：{{ effect.value }}
+                      </p>
+                    </div>
+                  </div>
+                  <div v-if="getStairwayView(one).laws.length > 0" class="sub-item">
+                    <p><strong>法则：</strong></p>
+                    <div
+                      v-for="law in getStairwayView(one).laws"
+                      :key="`law-${law.name}`"
+                      class="sub-item"
+                    >
+                      <p class="sub-item">• {{ law.name }}</p>
+                      <p
+                        v-for="effect in law.effects"
+                        :key="`law-${law.name}-${effect.key}`"
+                        class="sub-item"
+                      >
+                        • {{ effect.key }}：{{ effect.value }}
+                      </p>
+                    </div>
+                  </div>
+                  <p v-if="getStairwayView(one).godlyRank" class="sub-item">
+                    • 神位：{{ getStairwayView(one).godlyRank }}
+                  </p>
+                  <div
+                    v-if="
+                      getStairwayView(one).godKingdom?.name ||
+                      getStairwayView(one).godKingdom?.description
+                    "
+                    class="sub-item"
+                  >
+                    <p><strong>神国：</strong></p>
+                    <p v-if="getStairwayView(one).godKingdom?.name" class="sub-item">
+                      • 名称：{{ getStairwayView(one).godKingdom?.name }}
+                    </p>
+                    <p v-if="getStairwayView(one).godKingdom?.description" class="sub-item">
+                      • 描述：{{ getStairwayView(one).godKingdom?.description }}
+                    </p>
+                  </div>
+                </template>
+              </div>
               <p v-if="one.comment" class="item-flavor">{{ one.comment }}</p>
 
               <div v-if="one.equip && one.equip.length > 0" class="sub-list">
