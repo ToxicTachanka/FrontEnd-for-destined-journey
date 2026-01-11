@@ -11,6 +11,8 @@ interface Props {
   modelValue: string;
   /** 分类名称映射函数（可选，用于显示友好名称） */
   categoryNameFormatter?: (name: string) => string;
+  /** 禁用的分类列表 */
+  disabledCategories?: string[];
   /** 内容区域最大高度 */
   contentMaxHeight?: string;
   /** 左侧导航宽度 */
@@ -23,6 +25,7 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
   categoryNameFormatter: (name: string) => name,
+  disabledCategories: () => [],
   contentMaxHeight: '500px',
   sidebarWidth: '200px',
 });
@@ -31,8 +34,13 @@ const emit = defineEmits<Emits>();
 
 // 分类选择处理
 const handleCategorySelect = (category: string) => {
+  if (props.disabledCategories.includes(category)) {
+    return;
+  }
   emit('update:modelValue', category);
 };
+
+const isCategoryDisabled = (category: string) => props.disabledCategories.includes(category);
 </script>
 
 <template>
@@ -50,7 +58,8 @@ const handleCategorySelect = (category: string) => {
           v-for="category in categories"
           :key="category"
           class="category-item"
-          :class="{ active: modelValue === category }"
+          :class="{ active: modelValue === category, disabled: isCategoryDisabled(category) }"
+          :disabled="isCategoryDisabled(category)"
           @click="handleCategorySelect(category)"
         >
           {{ categoryNameFormatter(category) }}
@@ -156,6 +165,19 @@ const handleCategorySelect = (category: string) => {
       border-color: var(--accent-color);
       color: var(--primary-bg);
       font-weight: 600;
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      background: var(--input-bg);
+      border-color: var(--border-color);
+      color: var(--text-light);
+
+      &:hover {
+        background: var(--input-bg);
+        border-color: var(--border-color);
+      }
     }
   }
 }

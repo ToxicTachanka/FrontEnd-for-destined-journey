@@ -25,19 +25,30 @@ const currentSubCategory = ref<string>('');
 // 当前选中的品质筛选
 const currentRarity = ref<Rarity | 'all'>('all');
 
-// 子分类名称映射
-const categoryNameMap: Record<string, string> = {
-  Money: '初始携带货币',
-};
-
 // 获取显示用的分类名称
 const getCategoryDisplayName = (name: string): string => {
-  return categoryNameMap[name] || name;
+  return name;
 };
 
 const equipments = computed(() => getEquipments());
 const initialItems = computed(() => getInitialItems());
 const skillGroups = computed(() => getSkills());
+
+const currentRace = computed(() => {
+  return characterStore.character.race === '自定义'
+    ? characterStore.character.customRace
+    : characterStore.character.race;
+});
+
+const raceSpecificSkillCategories = computed(() => {
+  return Object.keys(getRaceCosts.value).filter(race => race !== '自定义');
+});
+
+const getDisabledSkillCategories = () => {
+  if (currentCategory.value !== 'skill') return [];
+
+  return raceSpecificSkillCategories.value.filter(category => category !== currentRace.value);
+};
 
 // 获取当前分类下的子分类列表
 const subCategories = computed(() => {
@@ -57,15 +68,8 @@ const subCategories = computed(() => {
 const isSkillCategoryAvailable = (category: string): boolean => {
   if (currentCategory.value !== 'skill') return true;
 
-  const currentRace =
-    characterStore.character.race === '自定义'
-      ? characterStore.character.customRace
-      : characterStore.character.race;
-
-  const raceSpecificCategories = Object.keys(getRaceCosts.value).filter(race => race !== '自定义');
-
-  if (raceSpecificCategories.includes(category)) {
-    return currentRace === category;
+  if (raceSpecificSkillCategories.value.includes(category)) {
+    return currentRace.value === category;
   }
 
   return true;
@@ -97,7 +101,8 @@ watch(
     if (currentCategory.value !== 'skill') return;
 
     if (!isSkillCategoryAvailable(currentSubCategory.value)) {
-      currentSubCategory.value = subCategories.value[0] || '';
+      const nextCategory = _.find(subCategories.value, isSkillCategoryAvailable) || '';
+      currentSubCategory.value = nextCategory;
     }
   },
   { deep: true },
@@ -225,6 +230,7 @@ const handleAddCustomItem = (
         <CategorySelectionLayout
           v-model="currentSubCategory"
           :categories="subCategories"
+          :disabled-categories="getDisabledSkillCategories()"
           :category-name-formatter="getCategoryDisplayName"
         >
           <!-- 品质筛选 -->
