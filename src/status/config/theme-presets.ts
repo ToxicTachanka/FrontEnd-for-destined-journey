@@ -77,8 +77,6 @@ const ParchmentTheme: Theme = {
 
     // 货币
     currencyGold: '#f3c94f',
-    currencySilver: '#c2c4c9',
-    currencyCopper: '#b67a3a',
   },
 };
 
@@ -155,8 +153,6 @@ const CrimsonTheme: Theme = {
 
     // 货币
     currencyGold: '#f2c653',
-    currencySilver: '#c6c0c4',
-    currencyCopper: '#b26d3a',
   },
 };
 
@@ -233,8 +229,6 @@ const IndigoTheme: Theme = {
 
     // 货币
     currencyGold: '#f1cf6a',
-    currencySilver: '#b7c1cc',
-    currencyCopper: '#b07a4a',
   },
 };
 
@@ -311,8 +305,6 @@ const BronzeTheme: Theme = {
 
     // 货币
     currencyGold: '#e6c04a',
-    currencySilver: '#bdb8b0',
-    currencyCopper: '#a8743e',
   },
 };
 
@@ -389,8 +381,6 @@ const SakuraTheme: Theme = {
 
     // 货币
     currencyGold: '#f2c85a',
-    currencySilver: '#c8c3d0',
-    currencyCopper: '#b57a64',
   },
 };
 
@@ -467,8 +457,6 @@ const ObsidianTheme: Theme = {
 
     // 货币
     currencyGold: '#e2c24f',
-    currencySilver: '#aeb4bf',
-    currencyCopper: '#b07c4c',
   },
 };
 
@@ -545,8 +533,6 @@ const IvoryTheme: Theme = {
 
     // 货币
     currencyGold: '#c7a531',
-    currencySilver: '#8a8a8a',
-    currencyCopper: '#a46a34',
   },
 };
 
@@ -623,8 +609,82 @@ const MistyLilacTheme: Theme = {
 
     // 货币
     currencyGold: '#B9892D',
-    currencySilver: '#6F667A',
-    currencyCopper: '#8C7BAB',
+  },
+};
+
+/**
+ * 清新薄荷主题（浅色）
+ * 现代、清新、活力氛围
+ */
+const FreshMintTheme: Theme = {
+  id: 'fresh-mint',
+  name: '清新薄荷',
+  colors: {
+    // 窗口容器
+    windowBg: '#F0F9F6',
+    windowBorder: '#7BC4A8',
+
+    // 标题栏
+    titleBarBg: '#E3F5EF',
+    titleBarText: '#1F4D3D',
+    titleBarIcon: '#4A9B7F',
+    titleBarBtnHover: 'rgba(74, 155, 127, 0.12)',
+
+    // Tab 栏
+    tabBarBg: '#EBF7F2',
+    tabText: '#4A7A68',
+    tabActiveText: '#1F4D3D',
+    tabIndicator: '#3EB489',
+    tabHoverBg: 'rgba(62, 180, 137, 0.14)',
+
+    // 内容区域
+    contentBg: '#F5FBF9',
+    cardBg: '#FFFFFF',
+    cardBorder: '#C5E5D8',
+
+    // 文本颜色
+    textPrimary: '#1F4D3D',
+    textSecondary: '#4A7A68',
+    textMuted: '#6B9585',
+
+    // 资源条
+    resourceHp: '#E74C5C',
+    resourceMp: '#4A90E2',
+    resourceSp: '#3EB489',
+    resourceExp: '#F5A623',
+    resourceText: '#f0f9f6',
+
+    // 品质颜色
+    qualityUnique: '#D4A03A',
+    qualityMythic: '#E74C8B',
+    qualityLegendary: '#F5A623',
+    qualityEpic: '#9B6FD8',
+    qualityRare: '#4A90E2',
+    qualityUncommon: '#3EB489',
+
+    // 交互状态
+    primaryBg: '#3EB489',
+    primaryText: '#FFFFFF',
+    success: '#3EB489',
+    warning: '#F5A623',
+    error: '#E74C5C',
+
+    // 命定系统
+    affection: '#FF6B9D',
+    affectionBg: 'rgba(255, 107, 157, 0.18)',
+    affectionText: '#C74576',
+    tagPresent: 'rgba(62, 180, 137, 0.16)',
+    tagPresentText: '#2A8A6A',
+    tagContract: 'rgba(231, 76, 92, 0.16)',
+    tagContractText: '#C74576',
+
+    // 登神长阶
+    ascensionElement: 'rgba(74, 144, 226, 0.14)',
+    ascensionPower: 'rgba(245, 166, 35, 0.14)',
+    ascensionLaw: 'rgba(155, 111, 216, 0.14)',
+
+    // 货币
+    currencyGold: '#F5A623',
   },
 };
 
@@ -638,6 +698,7 @@ export const ThemePresets: Record<ThemePresetId, Theme> = {
   obsidian: ObsidianTheme,
   ivory: IvoryTheme,
   'misty-lilac': MistyLilacTheme,
+  'fresh-mint': FreshMintTheme,
 };
 
 /** 默认主题 */
@@ -653,4 +714,5 @@ export const ThemeList: Array<{ id: ThemePresetId; name: string }> = [
   { id: 'obsidian', name: '墨黑' },
   { id: 'ivory', name: '米黄羊皮纸' },
   { id: 'misty-lilac', name: '雾紫' },
+  { id: 'fresh-mint', name: '清新薄荷' },
 ];

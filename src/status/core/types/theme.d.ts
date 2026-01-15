@@ -114,10 +114,6 @@ export interface ThemeColors {
   // 货币颜色
   /** 金币颜色 */
   currencyGold: string;
-  /** 银币颜色 */
-  currencySilver: string;
-  /** 铜币颜色 */
-  currencyCopper: string;
 }
 
 /**
@@ -131,7 +127,8 @@ export type ThemePresetId =
   | 'sakura' // 粉紫色
   | 'obsidian' // 墨黑
   | 'ivory' // 羊皮纸米黄
-  | 'misty-lilac'; // 雾紫
+  | 'misty-lilac' // 雾紫
+  | 'fresh-mint'; // 清新薄荷
 
 /**
  * 主题配置
