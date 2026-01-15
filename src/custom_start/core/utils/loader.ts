@@ -2,10 +2,10 @@ import JSON5 from 'json5';
 import type { Background, BaseInfoData, DestinedOne, Equipment, Item, Skill } from '../types';
 
 /**
- * 数据基础路径 - CDN 部署环境
- * 使用 main 分支实时加载最新数据
+ * 数据基础路径 - Cloudflare Pages 部署环境
+ * 使用相对路径从 Cloudflare Pages 加载数据，实时更新
  */
-const DATA_BASE_PATH = `https://cdn.jsdelivr.net/gh/ToxicTachanka/FrontEnd-for-destined-journey@main/public/assets/data`;
+const DATA_BASE_PATH = `/public/assets/data`;
 
 /**
  * 通用数据加载函数
