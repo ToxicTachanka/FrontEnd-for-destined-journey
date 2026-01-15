@@ -114,7 +114,8 @@ const nextButtonText = computed(() => {
 
 <template>
   <div class="layout">
-    <h1 class="main-title">命定之诗与黄昏之歌</h1>
+    <h1 class="main-title">命定之诗与矽晶之梦</h1>
+    <p class="subtitle">在这个魔法与科技并存的现代世界，开启你的冒险</p>
 
     <HeaderControls @open-preset="handleOpenPresetManage" />
 
@@ -158,8 +159,15 @@ const nextButtonText = computed(() => {
 
 .main-title {
   text-align: center;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
   color: var(--title-color);
+}
+
+.subtitle {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-light);
+  font-size: 0.95rem;
 }
 
 @media (max-width: 768px) {

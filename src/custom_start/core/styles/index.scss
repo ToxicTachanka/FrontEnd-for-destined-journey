@@ -7,22 +7,22 @@
 
 // ============ CSS 变量定义 ============
 :root {
-  // 颜色系统
-  --primary-bg: #f5efe6;
-  --card-bg: rgba(240, 230, 210, 0.95);
-  --input-bg: #fff9f0;
-  --border-color: #d4c4b0;
-  --border-color-strong: #8b7355;
-  --text-color: #3a3a3a;
-  --text-light: #666666;
-  --title-color: #5c4033;
-  --accent-color: #d4af37;
-  --error-color: #d32f2f;
-  --success-color: #388e3c;
-  --button-bg: #c6b8a5;
-  --button-hover: #b0a295;
-  --points-color: #5c4033;
-  --border-color-light: #e0d5c7;
+  // 颜色系统 - 现代科技魔法风格
+  --primary-bg: #f0f4f8;
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --input-bg: #ffffff;
+  --border-color: #cbd5e0;
+  --border-color-strong: #4a5568;
+  --text-color: #2d3748;
+  --text-light: #718096;
+  --title-color: #1a365d;
+  --accent-color: #4299e1;
+  --error-color: #e53e3e;
+  --success-color: #38a169;
+  --button-bg: #4299e1;
+  --button-hover: #3182ce;
+  --points-color: #2c5282;
+  --border-color-light: #e2e8f0;
 
   // 字体系统
   --font-title: 'Cinzel', serif;

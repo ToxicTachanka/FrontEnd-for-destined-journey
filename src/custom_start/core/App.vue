@@ -6,6 +6,6 @@
 
 <style lang="scss" scoped>
 .creator-app {
-  background-color: #f5efe6;
+  background-color: #f0f4f8;
 }
 </style>
