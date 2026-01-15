@@ -36,7 +36,7 @@ export const useCharacterStore = defineStore('character', () => {
     customRace: '',
     identity: getDefaultIdentity(),
     customIdentity: '',
-    startLocation: '大陆东南部区域-索伦蒂斯王国',
+    startLocation: '大陆东南部区域-索伦蒂斯联合王国',
     customStartLocation: '',
     level: 1,
     attributePoints: {
@@ -126,7 +126,7 @@ export const useCharacterStore = defineStore('character', () => {
       customRace: '',
       identity: getDefaultIdentity(),
       customIdentity: '',
-      startLocation: '大陆东南部区域-索伦蒂斯王国',
+      startLocation: '大陆东南部区域-索伦蒂斯联合王国',
       customStartLocation: '',
       level: 1,
       attributePoints: {
