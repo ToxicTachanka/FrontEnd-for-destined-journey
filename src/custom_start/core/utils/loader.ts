@@ -3,9 +3,9 @@ import type { Background, BaseInfoData, DestinedOne, Equipment, Item, Skill } fr
 
 /**
  * 数据基础路径 - CDN 部署环境
- * 使用版本号替代 @latest 以确保缓存正确更新
+ * 使用 main 分支实时加载最新数据
  */
-const DATA_BASE_PATH = `https://testingcf.jsdelivr.net/gh/The-poem-of-destiny/FrontEnd-for-destined-journey@${__APP_VERSION__}/public/assets/data`;
+const DATA_BASE_PATH = `https://cdn.jsdelivr.net/gh/ToxicTachanka/FrontEnd-for-destined-journey@main/public/assets/data`;
 
 /**
  * 通用数据加载函数
