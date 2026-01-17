@@ -161,6 +161,7 @@ const nextButtonText = computed(() => {
   text-align: center;
   margin-bottom: var(--spacing-sm);
   color: var(--title-color);
+  font-family: 'Microsoft YaHei', sans-serif;
 }
 
 .subtitle {
