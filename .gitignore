@@ -12,4 +12,6 @@ pnpm-debug.log*
 auto-imports.d.ts
 components.d.ts
 
+remark.md
+
 初始模板

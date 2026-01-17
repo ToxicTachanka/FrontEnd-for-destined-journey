@@ -147,7 +147,7 @@ const getStairwayView = (one: DestinedOne) => {
             <p><strong>身份：</strong>{{ displayIdentity }}</p>
             <p><strong>出生地：</strong>{{ displayLocation }}</p>
             <p><strong>等级：</strong>Lv.{{ characterStore.character.level }}</p>
-            <p><strong>金钱：</strong>{{ characterStore.character.money }} G</p>
+            <p><strong>金钱：</strong>{{ characterStore.character.money }} ₳</p>
           </div>
         </section>
 
